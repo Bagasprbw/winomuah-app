@@ -150,7 +150,7 @@ function addCategory() {
 
     router.post(
         '/admin/categories',
-        { name: newCategory.value, type: 'portfolio' },
+        { name: newCategory.value, type: 'product' },
         {
             onSuccess: () => {
                 showAddCategory.value = false

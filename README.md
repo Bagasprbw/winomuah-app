@@ -65,7 +65,7 @@ This setup provides a **SPA (Single Page Application)** experience with the simp
 | Styling | Tailwind CSS |
 | Build Tool | Vite |
 | Database | MySQL / PostgreSQL / SQLite |
-| Authentication | Laravel Breeze (Inertia Vue preset) |
+| Authentication | Midleware (Inertia Vue preset) |
 
 ---
 

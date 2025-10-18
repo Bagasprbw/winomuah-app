@@ -79,6 +79,7 @@ class DatabaseSeeder extends Seeder
             'tools' => 'Clip Studio Paint, Wacom Tablet',
             'description' => 'Karya digital dengan tema dunia fantasy, menampilkan karakter penyihir muda.',
             'image' => 'portofolio/fantasy1.png',
+            'is_published' => true,
         ]);
 
         Portofolio::create([
@@ -87,6 +88,7 @@ class DatabaseSeeder extends Seeder
             'tools' => 'Medibang Paint, iPad Pro',
             'description' => 'Komik pendek bergenre slice of life tentang kehidupan sehari-hari ilustrator.',
             'image' => 'portofolio/comic1.png',
+            'is_published' => true,
         ]);
 
         echo "✅ Dummy data berhasil ditambahkan!\n";

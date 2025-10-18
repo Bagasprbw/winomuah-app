@@ -19,6 +19,8 @@ Route::prefix('admin')->group(function () {
         ->name('products.toggle-publish');
     Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
 
-    Route::resource('portfolio', PortfolioController::class);
+    Route::resource('portofolio', PortfolioController::class);
+    Route::patch('/portofolio/{portofolio}/publish', [PortfolioController::class, 'togglePublish'])
+        ->name('portofolio.toggle-publish');
 });
 

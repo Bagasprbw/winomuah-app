@@ -30,9 +30,9 @@
           <span>Products</span>
         </Link>
 
-        <Link href="/admin/portfolio" class="menu-item" :class="{ active: $page.url.startsWith('/admin/portfolio') }">
-          <img :src="portfolioIcon" alt="Portfolio" class="w-5 h-5" />
-          <span>Portfolio</span>
+        <Link href="/admin/portofolio" class="menu-item" :class="{ active: $page.url.startsWith('/admin/portofolio') }">
+          <img :src="portofolioIcon" alt="portofolio" class="w-5 h-5" />
+          <span>Portofolio</span>
         </Link>
       </nav>
     </aside>
@@ -67,7 +67,7 @@ import Alert from '@/Components/Alert.vue'
 import dashboardIcon from './Components/dashbaord-icon.png'
 import companyIcon from './Components/comp-icon.png'
 import productIcon from './Components/prod-icon.png'
-import portfolioIcon from './Components/port-icon.png'
+import portofolioIcon from './Components/port-icon.png'
 
 const props = defineProps({
   company: Object

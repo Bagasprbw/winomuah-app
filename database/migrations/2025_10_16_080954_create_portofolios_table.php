@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('tools', 150)->nullable();
             $table->text('description')->nullable();
             $table->string('image', 255)->nullable();
+            $table->boolean('is_published')->default(false);
             $table->timestamps();
         });
     }

@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Portfolio;
+use App\Models\Portofolio;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -37,8 +37,8 @@ class DatabaseSeeder extends Seeder
 
         // 3️⃣ Categories (6 rows)
         $categories = [
-            ['name' => 'Komik', 'type' => 'portfolio'],
-            ['name' => 'Ilustrasi Digital', 'type' => 'portfolio'],
+            ['name' => 'Komik', 'type' => 'portofolio'],
+            ['name' => 'Ilustrasi Digital', 'type' => 'portofolio'],
             ['name' => 'Keychain', 'type' => 'product'],
             ['name' => 'Aksesori', 'type' => 'product'],
             ['name' => 'Poster', 'type' => 'product'],
@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
 
         // Ambil beberapa kategori
         $catProduct = Category::where('type', 'product')->first();
-        $catPortfolio = Category::where('type', 'portfolio')->first();
+        $catPortofolio = Category::where('type', 'portofolio')->first();
 
         // 4️⃣ Products (2 rows)
         Product::create([
@@ -72,21 +72,21 @@ class DatabaseSeeder extends Seeder
             'is_published' => true,
         ]);
 
-        // 5️⃣ Portfolio (2 rows)
-        Portfolio::create([
-            'category_id' => $catPortfolio->id,
+        // 5️⃣ Portofolio (2 rows)
+        Portofolio::create([
+            'category_id' => $catPortofolio->id,
             'title' => 'Ilustrasi Karakter Fantasy',
             'tools' => 'Clip Studio Paint, Wacom Tablet',
             'description' => 'Karya digital dengan tema dunia fantasy, menampilkan karakter penyihir muda.',
-            'image' => 'portfolio/fantasy1.png',
+            'image' => 'portofolio/fantasy1.png',
         ]);
 
-        Portfolio::create([
-            'category_id' => $catPortfolio->id,
+        Portofolio::create([
+            'category_id' => $catPortofolio->id,
             'title' => 'Komik Pendek Slice of Life',
             'tools' => 'Medibang Paint, iPad Pro',
             'description' => 'Komik pendek bergenre slice of life tentang kehidupan sehari-hari ilustrator.',
-            'image' => 'portfolio/comic1.png',
+            'image' => 'portofolio/comic1.png',
         ]);
 
         echo "✅ Dummy data berhasil ditambahkan!\n";

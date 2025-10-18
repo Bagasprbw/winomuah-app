@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PortfolioController extends Controller
+class PortofolioController extends Controller
 {
     //
 }

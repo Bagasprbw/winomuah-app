@@ -3,7 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\PortofolioController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -19,8 +19,8 @@ Route::prefix('admin')->group(function () {
         ->name('products.toggle-publish');
     Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
 
-    Route::resource('portofolio', PortfolioController::class);
-    Route::patch('/portofolio/{portofolio}/publish', [PortfolioController::class, 'togglePublish'])
+    Route::resource('portofolio', PortofolioController::class);
+    Route::patch('/portofolio/{portofolio}/publish', [PortofolioController::class, 'togglePublish'])
         ->name('portofolio.toggle-publish');
 });
 

@@ -7,7 +7,7 @@
 
                 <Link href="/admin/portofolio/create"
                     class="bg-[#f9a825] hover:bg-[#fbc02d] text-white font-semibold px-5 py-2 rounded-lg transition">
-                TAMBAH Portofolio
+                TAMBAH PORTOFOLIO
                 </Link>
             </div>
 
@@ -71,10 +71,10 @@
                             <td class="px-4 py-3 border-b">
                                 <div class="flex flex-col space-y-2">
                                     <!-- Tombol Tampilkan -->
-                                    <button
-                                        class="bg-[#4e342e] hover:bg-[#3e2723] text-white px-4 py-1 rounded-full text-sm font-semibold">
-                                        TAMPILKAN
-                                    </button>
+                                    <Link :href="`/admin/portofolio/${portofolio.id}`"
+                                        class="bg-[#4e342e] hover:bg-[#3e2723] text-white px-4 py-1 rounded-full text-sm font-semibold text-center">
+                                    TAMPILKAN
+                                    </Link>
 
                                     <!-- Tombol Edit -->
                                     <Link :href="`/admin/portofolio/${portofolio.id}/edit`"

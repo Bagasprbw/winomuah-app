@@ -121,4 +121,13 @@ class ProductController extends Controller
         // Redirect balik ke daftar produk dengan notifikasi sukses
         return redirect()->route('products.index')->with('success', '🗑️ Product deleted successfully!');
     }
+
+    public function show(Product $product)
+    {
+        $product->load('category');
+        return inertia('Admin/Products/Show', [
+            'product' => $product,
+            'company' => Company::first(),
+        ]);
+    }
 }

@@ -49,7 +49,7 @@
 
                             <!-- Harga -->
                             <td class="px-4 py-3 border-b text-gray-700">
-                                Rp{{ product.price.toLocaleString('id-ID') }}
+                                Rp {{ Number(product.price).toLocaleString('id-ID') }}
                             </td>
 
                             <!-- Kategori -->
@@ -71,10 +71,10 @@
                             <td class="px-4 py-3 border-b">
                                 <div class="flex flex-col space-y-2">
                                     <!-- Tombol Tampilkan -->
-                                    <button
-                                        class="bg-[#4e342e] hover:bg-[#3e2723] text-white px-4 py-1 rounded-full text-sm font-semibold">
-                                        TAMPILKAN
-                                    </button>
+                                    <Link :href="`/admin/products/${product.id}`"
+                                        class="bg-[#4e342e] hover:bg-[#3e2723] text-white px-4 py-1 rounded-full text-sm font-semibold text-center">
+                                    TAMPILKAN
+                                    </Link>
 
                                     <!-- Tombol Edit -->
                                     <Link :href="`/admin/products/${product.id}/edit`"

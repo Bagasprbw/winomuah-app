@@ -121,4 +121,12 @@ class PortofolioController extends Controller
         // Redirect balik ke daftar portofolio dengan notifikasi sukses
         return redirect()->route('portofolio.index')->with('success', '🗑️ Portofolio deleted successfully!');
     }
+
+    public function show(Portofolio $portofolio)
+    {
+        return Inertia::render('Admin/Portofolio/Show', [
+            'company' => Company::first(),
+            'portofolio' => $portofolio->load('category'),
+        ]);
+    }
 }

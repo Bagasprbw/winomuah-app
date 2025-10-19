@@ -1,23 +1,49 @@
 <template>
     <AppLayout>
         <!-- HERO SECTION -->
-        <section ref="hero" class="relative text-center py-24 px-6 rounded-2xl overflow-hidden bg-gray-100">
-            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80"
-                alt="Keychain background" class="absolute inset-0 w-full h-full object-cover opacity-40" />
-            <div class="relative z-10 max-w-3xl mx-auto">
-                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow">
+        <section
+            ref="heroRef"
+            class="relative min-h-[600px] flex items-center justify-center overflow-hidden rounded-3xl mx-4 md:mx-8 mt-4"
+        >
+            <!-- Background Image with Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-br from-amber-900/70 to-amber-700/60">
+                <img
+                    src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1920&q=80"
+                    alt="Handcrafted keychains background"
+                    class="w-full h-full object-cover mix-blend-overlay opacity-50"
+                />
+            </div>
+
+            <!-- Decorative Batik Pattern -->
+            <div class="absolute inset-0 opacity-20">
+                <svg class="w-full h-full" viewBox="0 0 1440 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <pattern id="batik-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                        <circle cx="25" cy="25" r="20" fill="white" opacity="0.3"/>
+                        <circle cx="75" cy="75" r="15" fill="white" opacity="0.2"/>
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#batik-pattern)"/>
+                </svg>
+            </div>
+
+            <!-- Content -->
+            <div class="relative z-10 text-center px-6 py-20 max-w-5xl mx-auto">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
                     Discover the Art of Winomuah
                 </h1>
-                <p class="text-white text-lg mb-6">
-                    Explore our curated collection of handcrafted goods, collaborating
-                    the rich heritage of African craftsmanship.
+                <p class="text-white text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow">
+                    Explore our curated collection of handcrafted goods, collaborating the rich heritage of African craftsmanship.
                 </p>
-                <div class="flex justify-center gap-4">
-                    <a href="/admin/dashboard" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-lg">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a
+                        href="#products"
+                        class="inline-flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    >
                         Order Now
                     </a>
                     <button
-                        class="bg-white text-yellow-600 hover:text-yellow-700 font-semibold py-2 px-6 rounded-lg border border-yellow-500">
+                        @click="scrollToCustom"
+                        class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-amber-600 font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    >
                         Design Your Own
                     </button>
                 </div>
@@ -25,101 +51,146 @@
         </section>
 
         <!-- FEATURED PRODUCTS -->
-        <section ref="featured" class="py-16 text-center">
-            <h2 class="text-3xl font-bold mb-8">Featured Products</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <div v-for="(product, i) in products" :key="i"
-                    class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition cursor-pointer"
-                    @click="openModal(product)">
-                    <img :src="product.image" alt="Product" class="rounded-lg mx-auto mb-4 h-48 w-full object-cover" />
-                    <h3 class="font-semibold text-gray-700">{{ product.title }}</h3>
-                    <p class="text-gray-500">{{ product.price }}</p>
+        <section
+            ref="productsRef"
+            id="products"
+            class="py-20 px-4 md:px-8"
+        >
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
+                    Featured Products
+                </h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    <ProductCard
+                        v-for="product in products"
+                        :key="product.id"
+                        :product="product"
+                        @click="openProductModal"
+                    />
+                </div>
+
+                <div class="flex justify-center mt-12">
+                    <button class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-3 rounded-xl transition-all duration-300">
+                        View Full Catalog
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
                 </div>
             </div>
-            <button class="mt-8 bg-yellow-100 hover:bg-yellow-200 text-yellow-700 font-medium px-6 py-2 rounded-lg">
-                View Full Catalog
-            </button>
         </section>
 
         <!-- PORTFOLIO -->
-        <section ref="portfolio" class="py-16 text-center bg-yellow-50">
-            <h2 class="text-3xl font-bold mb-8">Portofolio</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                <div v-for="(img, i) in portfolioImages" :key="i"
-                    class="p-4 bg-white rounded-xl shadow hover:shadow-lg transition">
-                    <img :src="img" alt="Portfolio" class="rounded-lg mb-3 h-40 w-full object-cover" />
-                    <h3 class="font-semibold">Judul Karya</h3>
-                    <p class="text-sm text-gray-500">Deskripsi singkat karya</p>
+        <section
+            ref="portfolioRef"
+            class="py-20 px-4 md:px-8 bg-gradient-to-b from-amber-50 to-white"
+        >
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
+                    Portfolio
+                </h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <PortfolioCard
+                        v-for="portfolio in portfolios"
+                        :key="portfolio.id"
+                        :portfolio="portfolio"
+                    />
+                </div>
+
+                <div class="flex justify-center mt-12">
+                    <button class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-3 rounded-xl transition-all duration-300">
+                        View Full Portfolio
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
                 </div>
             </div>
-            <button class="mt-8 bg-yellow-100 hover:bg-yellow-200 text-yellow-700 font-medium px-6 py-2 rounded-lg">
-                View Full Portofolio
-            </button>
         </section>
 
+        <!-- CUSTOM KEYCHAIN & DRAWING -->
+        <section
+            ref="customRef"
+            class="py-20 px-4 md:px-8"
+        >
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
+                    Custom Keychain & Custom Drawing
+                </h2>
 
-        <!-- CUSTOM SECTION -->
-        <section ref="custom" class="py-16 max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 px-6">
-            <img src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/107/MTA-177923951/hello-topper_custom-keychain-gantungan-kunci-acrylic-akrilik_full01.jpg"
-                alt="Custom Keychain" class="rounded-2xl w-full md:w-1/2 shadow" />
-            <div class="text-left">
-                <h2 class="text-2xl font-bold mb-2">Custom Keychain & Custom Drawing</h2>
-                <h3 class="font-semibold text-gray-700 mb-4">
-                    Your Custom Keychain & Drawing
-                </h3>
-                <p class="text-gray-600 mb-6">
-                    Turn your ideas into reality with our custom keychain design service.
-                    Our team of skilled designers will work with you to create a unique
-                    keychain that perfectly reflects your style and personality.
-                </p>
-                <button class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 font-medium px-6 py-2 rounded-lg">
-                    See More
-                </button>
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div class="rounded-2xl overflow-hidden shadow-xl">
+                        <img
+                            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/107/MTA-177923951/hello-topper_custom-keychain-gantungan-kunci-acrylic-akrilik_full01.jpg"
+                            alt="Custom Keychain Example"
+                            class="w-full h-full object-cover aspect-[4/3]"
+                        />
+                    </div>
+
+                    <div class="space-y-6">
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800">
+                            Your Custom Keychain & Drawing
+                        </h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Turn your ideas into reality with our custom keychain design service.
+                            Our team of skilled designers will work with you to create a unique
+                            keychain that perfectly reflects your style and personality.
+                        </p>
+                        <button class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105">
+                            See More
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- CONTACT -->
-        <section ref="contact" class="py-16 text-center bg-white">
-            <h2 class="text-2xl font-bold mb-4">Contact Me</h2>
-            <p class="text-gray-600 mb-6">
-                For inquiries or custom orders, please reach out to us via WhatsApp.
-            </p>
-            <button
-                class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-8 rounded-lg inline-flex items-center gap-2">
-                <i class="fa-brands fa-whatsapp text-xl"></i>
-                Contact Via WhatsApp
-            </button>
+        <section
+            ref="contactRef"
+            class="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-amber-50"
+        >
+            <div class="max-w-3xl mx-auto text-center space-y-8">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">
+                    Contact Me
+                </h2>
+                <p class="text-gray-600 text-lg md:text-xl">
+                    For inquiries or custom orders, please reach out to us via WhatsApp.
+                </p>
+                <a
+                    href="https://wa.me/6281234567890"
+                    target="_blank"
+                    class="inline-flex items-center gap-3 bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    Contact Via WhatsApp
+                </a>
+            </div>
         </section>
 
+        <!-- FLOATING WHATSAPP BUTTON -->
+        <a
+            href="https://wa.me/6281234567890"
+            target="_blank"
+            class="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300 z-40"
+            aria-label="Contact via WhatsApp"
+        >
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+        </a>
+
         <!-- PRODUCT MODAL -->
-        <transition name="fade">
-            <div v-if="selectedProduct" class="fixed inset-0 bg-black/60 flex justify-center items-center z-50 px-4">
-                <div class="bg-white rounded-3xl p-6 md:p-8 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]">
-                    <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
-                        @click="selectedProduct = null">
-                        &times;
-                    </button>
-
-                    <h2 class="text-2xl font-bold text-center mb-4">
-                        {{ selectedProduct.title }}
-                    </h2>
-
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <img :src="selectedProduct.image" alt="Product" class="rounded-xl w-full object-cover" />
-                        <div class="flex flex-col gap-4">
-                            <p><strong>Deskripsi:</strong><br />{{ selectedProduct.desc }}</p>
-                            <p><strong>Price:</strong><br />{{ selectedProduct.price }}</p>
-                            <p><strong>Bahan:</strong><br />{{ selectedProduct.material }}</p>
-                            <p><strong>Kategori:</strong><br />{{ selectedProduct.category }}</p>
-                            <div class="grid grid-cols-2 gap-2 mt-4">
-                                <img v-for="(img, index) in selectedProduct.images" :key="index" :src="img"
-                                    class="rounded-lg w-full h-28 object-cover" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </transition>
+        <ProductModal
+            :product="selectedProduct"
+            @close="selectedProduct = null"
+        />
     </AppLayout>
 </template>
 
@@ -127,56 +198,59 @@
 import { ref, onMounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import AppLayout from './AppLayout.vue'
+import ProductCard from '../Components/ProductCard.vue'
+import PortfolioCard from '../Components/PortfolioCard.vue'
+import ProductModal from '../Components/ProductModal.vue'
+
 gsap.registerPlugin(ScrollTrigger)
 
-import AppLayout from './AppLayout.vue'
+// Refs for animations
+const heroRef = ref(null)
+const productsRef = ref(null)
+const portfolioRef = ref(null)
+const customRef = ref(null)
+const contactRef = ref(null)
 
+// Modal state
 const selectedProduct = ref(null)
-const hero = ref(null)
-const featured = ref(null)
-const portfolio = ref(null) // ini ref DOM untuk animasi
-const custom = ref(null)
-const contact = ref(null)
 
-const openModal = (product) => {
-    selectedProduct.value = product
-}
-
+// Dummy data
 const products = [
     {
+        id: 1,
         title: 'Pochita Keychain',
-        image:
-            'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/101/MTA-182235926/no_brand_tumbler-termos_premium_stainless_steel_304_tumbler_sedotan_tahan_panas_dingin_500ml_bottle_kml-836_full01_kdfrsmlv.jpg',
+        image: 'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/101/MTA-182235926/no_brand_tumbler-termos_premium_stainless_steel_304_tumbler_sedotan_tahan_panas_dingin_500ml_bottle_kml-836_full01_kdfrsmlv.jpg',
         price: 'Rp 8,000',
-        desc: 'Made with high-quality material, this keychain perfectly captures Pochita’s adorable look.',
-        material: 'Kulit',
-        category: 'Aksesoris',
+        desc: 'Made with high-quality material, this keychain perfectly captures Pochitas adorable look.',
+        material: 'Acrylic',
+        category: 'Accessories',
         images: [
             'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/101/MTA-182235926/no_brand_tumbler-termos_premium_stainless_steel_304_tumbler_sedotan_tahan_panas_dingin_500ml_bottle_kml-836_full01_kdfrsmlv.jpg',
             'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/101/MTA-182235926/no_brand_tumbler-termos_premium_stainless_steel_304_tumbler_sedotan_tahan_panas_dingin_500ml_bottle_kml-836_full01_kdfrsmlv.jpg'
         ]
     },
     {
+        id: 2,
         title: 'Owl Crochet Keychain',
-        image:
-            'https://www.wayangstore.com/wp-content/uploads/2016/12/Gantungan-Kunci-Akrilik-Kamajaya-a.jpg',
+        image: 'https://www.wayangstore.com/wp-content/uploads/2016/12/Gantungan-Kunci-Akrilik-Kamajaya-a.jpg',
         price: 'Rp 9,000',
         desc: 'Cute handmade owl keychain from cotton yarn.',
-        material: 'Benang katun',
-        category: 'Aksesoris',
+        material: 'Cotton Yarn',
+        category: 'Handmade',
         images: [
             'https://www.wayangstore.com/wp-content/uploads/2016/12/Gantungan-Kunci-Akrilik-Kamajaya-a.jpg',
             'https://www.wayangstore.com/wp-content/uploads/2016/12/Gantungan-Kunci-Akrilik-Kamajaya-a.jpg'
         ]
     },
     {
+        id: 3,
         title: 'Heart Brass Pendant',
-        image:
-            'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/114/MTA-138369579/brd-60517_cute-characters-on-doughnut-keychain-ganci-gantungan-kunci-imut-lucu-gift-goodie-bag-anak-souvenir-koleksi-collectible_full02-c7644815.jpg',
+        image: 'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/114/MTA-138369579/brd-60517_cute-characters-on-doughnut-keychain-ganci-gantungan-kunci-imut-lucu-gift-goodie-bag-anak-souvenir-koleksi-collectible_full02-c7644815.jpg',
         price: 'Rp 9,000',
         desc: 'Elegant handcrafted brass pendant in heart shape.',
-        material: 'Kuningan',
-        category: 'Perhiasan',
+        material: 'Brass',
+        category: 'Jewelry',
         images: [
             'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/114/MTA-138369579/brd-60517_cute-characters-on-doughnut-keychain-ganci-gantungan-kunci-imut-lucu-gift-goodie-bag-anak-souvenir-koleksi-collectible_full02-c7644815.jpg',
             'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/114/MTA-138369579/brd-60517_cute-characters-on-doughnut-keychain-ganci-gantungan-kunci-imut-lucu-gift-goodie-bag-anak-souvenir-koleksi-collectible_full02-c7644815.jpg'
@@ -184,40 +258,128 @@ const products = [
     }
 ]
 
-// 🔹 Ganti nama jadi portfolioImages agar tidak bentrok
-const portfolioImages = [
-    'https://images.unsplash.com/photo-1529101091764-c3526daf38fe?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1549187774-b4e9b0445b06?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1473186505569-9c61870c11f9?auto=format&fit=crop&w=600&q=80',
-    'https://images.unsplash.com/photo-1581349480311-9c449d3d0b50?auto=format&fit=crop&w=600&q=80'
+const portfolios = [
+    {
+        id: 1,
+        title: 'Abstract Art',
+        description: 'Colorful abstract painting',
+        image: 'https://images.unsplash.com/photo-1529101091764-c3526daf38fe?auto=format&fit=crop&w=600&q=80'
+    },
+    {
+        id: 2,
+        title: 'Portrait Drawing',
+        description: 'Realistic portrait sketch',
+        image: 'https://images.unsplash.com/photo-1549187774-b4e9b0445b06?auto=format&fit=crop&w=600&q=80'
+    },
+    {
+        id: 3,
+        title: 'Landscape Art',
+        description: 'Scenic landscape painting',
+        image: 'https://images.unsplash.com/photo-1473186505569-9c61870c11f9?auto=format&fit=crop&w=600&q=80'
+    },
+    {
+        id: 4,
+        title: 'Character Design',
+        description: 'Original character illustration',
+        image: 'https://images.unsplash.com/photo-1581349480311-9c449d3d0b50?auto=format&fit=crop&w=600&q=80'
+    }
 ]
 
+// Methods
+const openProductModal = (product) => {
+    selectedProduct.value = product
+}
+
+const scrollToCustom = () => {
+    customRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
+
+// Animation setup
 onMounted(() => {
-    const sections = [hero, featured, portfolio, custom, contact]
+    const sections = [heroRef, productsRef, portfolioRef, customRef, contactRef]
+
     sections.forEach((section) => {
-        gsap.from(section.value, {
+        if (section.value) {
+            gsap.from(section.value, {
+                opacity: 0,
+                y: 60,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: section.value,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                }
+            })
+        }
+    })
+
+    // Animate product cards with stagger
+    if (productsRef.value) {
+        gsap.from(productsRef.value.querySelectorAll('.group'), {
             opacity: 0,
-            y: 50,
-            duration: 0.8,
+            y: 40,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power2.out',
             scrollTrigger: {
-                trigger: section.value,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse'
+                trigger: productsRef.value,
+                start: 'top 70%'
             }
         })
-    })
+    }
+
+    // Animate portfolio cards with stagger
+    if (portfolioRef.value) {
+        gsap.from(portfolioRef.value.querySelectorAll('.group'), {
+            opacity: 0,
+            scale: 0.9,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+                trigger: portfolioRef.value,
+                start: 'top 70%'
+            }
+        })
+    }
 })
 </script>
 
-
-<style>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.3s ease;
+<style scoped>
+/* Custom container query support for ultra-responsive design */
+@container (min-width: 640px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
+@container (min-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #f59e0b;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d97706;
 }
 </style>

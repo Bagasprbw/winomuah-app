@@ -5,15 +5,15 @@
             <div class="flex items-center text-sm text-gray-500 mb-4 space-x-1">
                 <Link href="/admin/dashboard" class="hover:text-[#f9a825]">Dashboard</Link>
                 <span>/</span>
-                <Link href="/admin/products" class="hover:text-[#f9a825]">Products</Link>
+                <Link href="/admin/portofolio" class="hover:text-[#f9a825]">Portofolio</Link>
                 <span>/</span>
                 <span class="text-[#f9a825] font-medium">Add New</span>
             </div>
 
             <!-- Header -->
             <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold text-[#f9a825]">Add New Product</h1>
-                <Link href="/admin/products"
+                <h1 class="text-3xl font-bold text-[#f9a825]">Add New Portofolio</h1>
+                <Link href="/admin/portofolio"
                     class="bg-[#e0e0e0] hover:bg-[#ccc] text-gray-800 font-medium px-4 py-2 rounded-lg">
                 ← Back
                 </Link>
@@ -21,10 +21,10 @@
 
             <!-- Form -->
             <form @submit.prevent="submitForm" class="bg-white p-8 rounded-2xl shadow-md max-w-3xl mx-auto">
-                <!-- Product Name -->
+                <!-- Portofolio Name -->
                 <div class="mb-5">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
-                    <input v-model="form.name" type="text" placeholder="Enter product title"
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Portofolio title</label>
+                    <input v-model="form.title" type="text" placeholder="Enter portofolio title"
                         class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#f9a825] focus:outline-none"
                         required />
                 </div>
@@ -32,15 +32,15 @@
                 <!-- Description -->
                 <div class="mb-5">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Description</label>
-                    <textarea v-model="form.description" placeholder="Enter product description" rows="3"
+                    <textarea v-model="form.description" placeholder="Enter portofolio description" rows="3"
                         class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#f9a825] focus:outline-none"></textarea>
                 </div>
 
                 <!-- Price & Category -->
                 <div class="grid grid-cols-2 gap-6 mb-5">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Price</label>
-                        <input v-model="form.price" type="number" step="0.01" placeholder="Rp 0"
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Tools</label>
+                        <input v-model="form.tools" type="text" step="0.01" placeholder="Ex: Photoshop, Corel Draw"
                             class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#f9a825] focus:outline-none" />
                     </div>
 
@@ -67,7 +67,7 @@
 
                 <!-- Image Upload -->
                 <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Product Image</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Portofolio Image</label>
                     <input type="file" @change="handleImageUpload" accept="image/*"
                         class="border border-dashed border-gray-400 w-full p-4 rounded-lg cursor-pointer hover:border-[#f9a825]" />
                     <p class="text-xs text-gray-500 mt-1">JPG, JPEG, PNG up to 5MB</p>
@@ -77,13 +77,13 @@
 
                 <!-- Actions -->
                 <div class="flex justify-end space-x-3">
-                    <Link href="/admin/products"
+                    <Link href="/admin/portofolio"
                         class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold">
                     Cancel
                     </Link>
                     <button type="submit"
                         class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-5 py-2 rounded-lg font-semibold">
-                        Save Product
+                        Save Portofolio
                     </button>
                 </div>
             </form>
@@ -150,7 +150,7 @@ function addCategory() {
 
     router.post(
         '/admin/categories',
-        { name: newCategory.value, type: 'product' },
+        { name: newCategory.value, type: 'portofolio' },
         {
             onSuccess: () => {
                 showAddCategory.value = false
@@ -164,16 +164,16 @@ function addCategory() {
 // submit produk baru
 function submitForm() {
     const data = new FormData()
-    data.append('name', form.value.name)
+    data.append('title', form.value.title)
     data.append('description', form.value.description)
-    data.append('price', form.value.price)
+    data.append('tools', form.value.tools)
     data.append('category_id', form.value.category_id)
     if (form.value.image) data.append('image', form.value.image)
 
-    router.post('/admin/products', data, {
+    router.post('/admin/portofolio', data, {
         forceFormData: true,
         onSuccess: () => {
-            router.visit('/admin/products')
+            router.visit('/admin/portofolio')
         },
     })
 }

@@ -17,10 +17,12 @@ Route::prefix('admin')->group(function () {
     // 👇 route khusus ubah status publish
     Route::patch('/products/{product}/publish', [ProductController::class, 'togglePublish'])
         ->name('products.toggle-publish');
-    Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
 
     Route::resource('portofolio', PortofolioController::class);
+    // 👇 route khusus ubah status publish
     Route::patch('/portofolio/{portofolio}/publish', [PortofolioController::class, 'togglePublish'])
         ->name('portofolio.toggle-publish');
+
+        Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
 });
 

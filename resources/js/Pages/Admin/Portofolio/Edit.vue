@@ -5,20 +5,20 @@
       <div class="flex items-center text-sm text-gray-500 mb-4 space-x-1">
         <Link href="/admin/dashboard" class="hover:text-[#f9a825]">Dashboard</Link>
         <span>/</span>
-        <Link href="/admin/products" class="hover:text-[#f9a825]">Products</Link>
+        <Link href="/admin/portofolio" class="hover:text-[#f9a825]">Portofolio</Link>
         <span>/</span>
         <span class="text-[#f9a825] font-medium">Edit</span>
       </div>
 
       <!-- Header -->
-      <h1 class="text-3xl font-bold text-[#f9a825] mb-6">Edit Product</h1>
+      <h1 class="text-3xl font-bold text-[#f9a825] mb-6">Edit Portofolio</h1>
 
       <!-- Form -->
-      <form @submit.prevent="updateProduct" class="bg-white p-8 rounded-2xl shadow-md max-w-3xl mx-auto">
-        <!-- Product Name -->
+      <form @submit.prevent="updatePortofolio" class="bg-white p-8 rounded-2xl shadow-md max-w-3xl mx-auto">
+        <!-- Portofolio Title -->
         <div class="mb-5">
-          <label class="block font-semibold text-gray-700 mb-2">Product Name</label>
-          <input v-model="form.name" type="text" class="input" required />
+          <label class="block font-semibold text-gray-700 mb-2">Portofolio Tile</label>
+          <input v-model="form.title" type="text" class="input" required />
         </div>
 
         <!-- Description -->
@@ -30,8 +30,8 @@
         <!-- Price & Category -->
         <div class="grid grid-cols-2 gap-6 mb-5">
           <div>
-            <label class="block font-semibold text-gray-700 mb-2">Price</label>
-            <input v-model="form.price" type="number" class="input" />
+            <label class="block font-semibold text-gray-700 mb-2">Tools</label>
+            <input v-model="form.tools" type="text" class="input" />
           </div>
 
           <div>
@@ -66,8 +66,8 @@
               class="w-24 h-24 object-cover rounded-lg border"
             />
             <img
-              v-else-if="product.image"
-              :src="`/storage/${product.image}`"
+              v-else-if="portofolio.image"
+              :src="`/storage/${portofolio.image}`"
               class="w-24 h-24 object-cover rounded-lg border"
             />
           </div>
@@ -76,7 +76,7 @@
         <!-- Actions -->
         <div class="flex justify-end space-x-3">
           <Link
-            href="/admin/products"
+            href="/admin/portofolio"
             class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold"
           >
             Cancel
@@ -85,7 +85,7 @@
             type="submit"
             class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-5 py-2 rounded-lg font-semibold"
           >
-            Update Product
+            Update Portofolio
           </button>
         </div>
       </form>
@@ -135,15 +135,15 @@ import AppLayout from '../AppLayout.vue'
 const props = defineProps({
   company: Object,
   categories: Array,
-  product: Object,
+  portofolio: Object,
 })
 
 // Form data
 const form = ref({
-  name: props.product.name,
-  description: props.product.description,
-  price: props.product.price,
-  category_id: props.product.category_id,
+  title: props.portofolio.title,
+  description: props.portofolio.description,
+  tools: props.portofolio.tools,
+  category_id: props.portofolio.category_id,
   image: null,
 })
 
@@ -166,7 +166,7 @@ function addCategory() {
 
   router.post(
     '/admin/categories',
-    { name: newCategory.value, type: 'product' },
+    { name: newCategory.value, type: 'portofolio' },
     {
       onSuccess: () => {
         showAddCategory.value = false
@@ -177,19 +177,19 @@ function addCategory() {
   )
 }
 
-// Update product
-function updateProduct() {
+// Update Portofolio
+function updatePortofolio() {
   const data = new FormData()
-  data.append('name', form.value.name)
+  data.append('title', form.value.title)
   data.append('description', form.value.description || '')
-  data.append('price', form.value.price || '')
+  data.append('tools', form.value.tools || '')
   data.append('category_id', form.value.category_id)
   if (form.value.image) data.append('image', form.value.image)
   data.append('_method', 'PUT') // wajib untuk Laravel
 
-  router.post(`/admin/products/${props.product.id}`, data, {
+  router.post(`/admin/portofolio/${props.portofolio.id}`, data, {
     forceFormData: true,
-    onSuccess: () => router.visit('/admin/products'),
+    onSuccess: () => router.visit('/admin/portofolio'),
   })
 }
 </script>

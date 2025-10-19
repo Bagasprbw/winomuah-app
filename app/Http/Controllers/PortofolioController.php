@@ -17,10 +17,10 @@ class PortofolioController extends Controller
             'company' => Company::first(),
             'portofolio' => Portofolio::with('category')->get()->map(fn($p) => [
                 'id' => $p->id,
-                'title' => $p->name,
+                'title' => $p->title,
                 'description' => $p->description,
                 'image' => $p->image,
-                'tools' => $p->price,
+                'tools' => $p->tools,
                 'is_published' => (bool) $p->is_published,
                 'category' => $p->category?->name,
             ]),
@@ -101,8 +101,8 @@ class PortofolioController extends Controller
 
         // ✅ Tentukan pesan dinamis
         $message = $request->is_published
-            ? "✅ {$portofolio->name} berhasil di-publish!"
-            : "⚙️ {$portofolio->name} diubah menjadi private.";
+            ? "✅ {$portofolio->title} berhasil di-publish!"
+            : "⚙️ {$portofolio->title} diubah menjadi private.";
 
         return back()
             ->with('success', $message);

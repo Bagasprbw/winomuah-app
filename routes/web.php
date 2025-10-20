@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
@@ -8,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Home'); // akan load resources/js/Pages/Home.vue
+    return Inertia::render('Home');
 });
 
 Route::prefix('admin')->group(function () {
@@ -20,5 +21,5 @@ Route::prefix('admin')->group(function () {
     Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
 
     Route::resource('portfolio', PortfolioController::class);
-});
 
+});

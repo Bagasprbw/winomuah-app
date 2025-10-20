@@ -6,11 +6,11 @@
             class="relative min-h-[600px] flex items-center justify-center overflow-hidden rounded-3xl mx-4 md:mx-8 mt-4"
         >
             <!-- Background Image with Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-br from-amber-900/70 to-amber-700/60">
+            <div class="absolute inset-0 from-amber-900/70 to-amber-700/60">
                 <img
-                    src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1920&q=80"
+                    src="https://png.pngtree.com/background/20250107/original/pngtree-yellow-watercolor-batik-repeat-die-multi-craft-picture-image_15703879.jpg"
                     alt="Handcrafted keychains background"
-                    class="w-full h-full object-cover mix-blend-overlay opacity-50"
+                    class="w-full h-full object-cover mix-blend-overlay opacity-80"
                 />
             </div>
 
@@ -162,7 +162,7 @@
                     For inquiries or custom orders, please reach out to us via WhatsApp.
                 </p>
                 <a
-                    href="https://wa.me/6281234567890"
+                    href="https://wa.me/+6289649079690"
                     target="_blank"
                     class="inline-flex items-center gap-3 bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
@@ -176,7 +176,7 @@
 
         <!-- FLOATING WHATSAPP BUTTON -->
         <a
-            href="https://wa.me/6281234567890"
+            href="https://wa.me/+6289649079690"
             target="_blank"
             class="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300 z-40"
             aria-label="Contact via WhatsApp"
@@ -220,40 +220,40 @@ const products = [
     {
         id: 1,
         title: 'Pochita Keychain',
-        image: 'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/101/MTA-182235926/no_brand_tumbler-termos_premium_stainless_steel_304_tumbler_sedotan_tahan_panas_dingin_500ml_bottle_kml-836_full01_kdfrsmlv.jpg',
+        image: '/assets/Featured-products1.png',
         price: 'Rp 8,000',
         desc: 'Made with high-quality material, this keychain perfectly captures Pochitas adorable look.',
         material: 'Acrylic',
         category: 'Accessories',
         images: [
-            'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/101/MTA-182235926/no_brand_tumbler-termos_premium_stainless_steel_304_tumbler_sedotan_tahan_panas_dingin_500ml_bottle_kml-836_full01_kdfrsmlv.jpg',
-            'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/101/MTA-182235926/no_brand_tumbler-termos_premium_stainless_steel_304_tumbler_sedotan_tahan_panas_dingin_500ml_bottle_kml-836_full01_kdfrsmlv.jpg'
+            '/assets/Featured-products1.png',
+            '/assets/Featured-products1.png'
         ]
     },
     {
         id: 2,
         title: 'Owl Crochet Keychain',
-        image: 'https://www.wayangstore.com/wp-content/uploads/2016/12/Gantungan-Kunci-Akrilik-Kamajaya-a.jpg',
+        image: '/assets/Featured-products2.png',
         price: 'Rp 9,000',
         desc: 'Cute handmade owl keychain from cotton yarn.',
         material: 'Cotton Yarn',
         category: 'Handmade',
         images: [
-            'https://www.wayangstore.com/wp-content/uploads/2016/12/Gantungan-Kunci-Akrilik-Kamajaya-a.jpg',
-            'https://www.wayangstore.com/wp-content/uploads/2016/12/Gantungan-Kunci-Akrilik-Kamajaya-a.jpg'
+            '/assets/Featured-products2.png',
+            '/assets/Featured-products2.png'
         ]
     },
     {
         id: 3,
         title: 'Heart Brass Pendant',
-        image: 'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/114/MTA-138369579/brd-60517_cute-characters-on-doughnut-keychain-ganci-gantungan-kunci-imut-lucu-gift-goodie-bag-anak-souvenir-koleksi-collectible_full02-c7644815.jpg',
+        image: '/assets/Featured-products3.png',
         price: 'Rp 9,000',
         desc: 'Elegant handcrafted brass pendant in heart shape.',
         material: 'Brass',
         category: 'Jewelry',
         images: [
-            'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/114/MTA-138369579/brd-60517_cute-characters-on-doughnut-keychain-ganci-gantungan-kunci-imut-lucu-gift-goodie-bag-anak-souvenir-koleksi-collectible_full02-c7644815.jpg',
-            'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/114/MTA-138369579/brd-60517_cute-characters-on-doughnut-keychain-ganci-gantungan-kunci-imut-lucu-gift-goodie-bag-anak-souvenir-koleksi-collectible_full02-c7644815.jpg'
+            '/assets/Featured-products3.png',
+            '/assets/Featured-products3.png'
         ]
     }
 ]

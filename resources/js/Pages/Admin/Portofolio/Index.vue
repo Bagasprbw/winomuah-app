@@ -70,10 +70,10 @@
 
                             <td class="px-4 py-3 border-b">
                                 <div class="flex flex-col space-y-2">
-                                    <!-- Tombol Tampilkan -->
+                                    <!-- Tombol Detail -->
                                     <Link :href="`/admin/portofolio/${portofolio.id}`"
                                         class="bg-[#4e342e] hover:bg-[#3e2723] text-white px-4 py-1 rounded-full text-sm font-semibold text-center">
-                                    TAMPILKAN
+                                    DETAIL
                                     </Link>
 
                                     <!-- Tombol Edit -->

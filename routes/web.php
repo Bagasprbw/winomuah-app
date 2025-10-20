@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PortofolioController;
@@ -23,6 +24,9 @@ Route::prefix('admin')->group(function () {
     Route::patch('/portofolio/{portofolio}/publish', [PortofolioController::class, 'togglePublish'])
         ->name('portofolio.toggle-publish');
 
-        Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::get('/company', [CompanyController::class, 'index'])->name('company.index');
+    Route::post('/company/update', [CompanyController::class, 'update'])->name('company.update');
+
+    Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
 });
 

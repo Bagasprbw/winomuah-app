@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '+628123456789',
             'instagram' => '@studiokaryanusantara',
             'logo' => 'company/logo.png',
-            'banner' => 'company/banner.png',
+            'banner' => 'company/banner.jpg',
         ]);
 
         // 3️⃣ Categories (6 rows)

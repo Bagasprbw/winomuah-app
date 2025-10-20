@@ -1,11 +1,9 @@
 <template>
     <AppLayout>
-        <!-- HERO SECTION -->
         <section
             ref="heroRef"
             class="relative min-h-[600px] flex items-center justify-center overflow-hidden rounded-3xl mx-4 md:mx-8 mt-4"
         >
-            <!-- Background Image with Overlay -->
             <div class="absolute inset-0 from-amber-900/70 to-amber-700/60">
                 <img
                     src="https://png.pngtree.com/background/20250107/original/pngtree-yellow-watercolor-batik-repeat-die-multi-craft-picture-image_15703879.jpg"
@@ -14,7 +12,6 @@
                 />
             </div>
 
-            <!-- Decorative Batik Pattern -->
             <div class="absolute inset-0 opacity-20">
                 <svg class="w-full h-full" viewBox="0 0 1440 630" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <pattern id="batik-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
@@ -25,7 +22,6 @@
                 </svg>
             </div>
 
-            <!-- Content -->
             <div class="relative z-10 text-center px-6 py-20 max-w-5xl mx-auto">
                 <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
                     Discover the Art of Winomuah
@@ -35,7 +31,7 @@
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a
-                        href="#products"
+                        href="/products"
                         class="inline-flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                     >
                         Order Now
@@ -50,7 +46,6 @@
             </div>
         </section>
 
-        <!-- FEATURED PRODUCTS -->
         <section
             ref="productsRef"
             id="products"
@@ -66,7 +61,7 @@
                         v-for="product in products"
                         :key="product.id"
                         :product="product"
-                        @click="openProductModal"
+                        @click="openProductModal(product)"
                     />
                 </div>
 
@@ -81,7 +76,6 @@
             </div>
         </section>
 
-        <!-- PORTFOLIO -->
         <section
             ref="portfolioRef"
             class="py-20 px-4 md:px-8 bg-gradient-to-b from-amber-50 to-white"
@@ -110,7 +104,6 @@
             </div>
         </section>
 
-        <!-- CUSTOM KEYCHAIN & DRAWING -->
         <section
             ref="customRef"
             class="py-20 px-4 md:px-8"
@@ -149,8 +142,8 @@
             </div>
         </section>
 
-        <!-- CONTACT -->
         <section
+            id="contact"
             ref="contactRef"
             class="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-amber-50"
         >
@@ -174,7 +167,6 @@
             </div>
         </section>
 
-        <!-- FLOATING WHATSAPP BUTTON -->
         <a
             href="https://wa.me/+6289649079690"
             target="_blank"
@@ -186,7 +178,6 @@
             </svg>
         </a>
 
-        <!-- PRODUCT MODAL -->
         <ProductModal
             :product="selectedProduct"
             @close="selectedProduct = null"
@@ -195,7 +186,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue' // <-- 1. IMPORT nextTick
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import AppLayout from './AppLayout.vue'
@@ -295,7 +286,10 @@ const scrollToCustom = () => {
 }
 
 // Animation setup
-onMounted(() => {
+onMounted(async () => { // <-- 2. JADIKAN ASYNC
+    await nextTick() // <-- 3. TAMBAHKAN AWAIT nextTick()
+
+    // Seluruh kode GSAP-mu yang sudah ada, sekarang aman
     const sections = [heroRef, productsRef, portfolioRef, customRef, contactRef]
 
     sections.forEach((section) => {

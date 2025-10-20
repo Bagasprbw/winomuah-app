@@ -12,6 +12,12 @@ Route::get('/', function () {
     return Inertia::render('Home');
 });
 
+// ===============================
+// FRONTEND PRODUCT ROUTES
+// ===============================
+Route::get('/products', [ProductController::class, 'publicIndex'])->name('frontend.products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('frontend.products.show');
+
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', ProductController::class);

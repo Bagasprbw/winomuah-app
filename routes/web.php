@@ -14,6 +14,7 @@ Route::get('/', function () {
 
 // ===============================
 // FRONTEND PRODUCT ROUTES (DODI)
+// oke
 // ===============================
 Route::get('/products', [ProductController::class, 'publicIndex'])->name('frontend.products.index');
 Route::get('/products/{product}', [ProductController::class, 'publicShow'])->name('frontend.products.show');

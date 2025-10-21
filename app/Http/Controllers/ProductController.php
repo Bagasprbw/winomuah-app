@@ -122,6 +122,7 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', '🗑️ Product deleted successfully!');
     }
 
+    // PUBLIKKKK
     public function publicIndex()
     {
         $products = Product::with('category')
@@ -141,7 +142,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function publicShow($id)
     {
         $product = Product::with('category')->findOrFail($id);
 

@@ -4,7 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\PortofolioController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,7 +16,7 @@ Route::get('/', function () {
 // FRONTEND PRODUCT ROUTES
 // ===============================
 Route::get('/products', [ProductController::class, 'publicIndex'])->name('frontend.products.index');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('frontend.products.show');
+Route::get('/products/{product}', [ProductController::class, 'publicShow'])->name('frontend.products.show');
 
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -26,6 +26,5 @@ Route::prefix('admin')->group(function () {
         ->name('products.toggle-publish');
     Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
 
-    Route::resource('portfolio', PortfolioController::class);
-
+    Route::resource('portofolio', PortofolioController::class);
 });

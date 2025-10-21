@@ -122,12 +122,39 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', '🗑️ Product deleted successfully!');
     }
 
-    public function show(Product $product)
+    // PUBLIKKKK
+    public function publicIndex()
     {
-        $product->load('category');
-        return inertia('Admin/Products/Show', [
-            'product' => $product,
-            'company' => Company::first(),
+        $products = Product::with('category')
+            ->where('is_published', true)
+            ->latest()
+            ->get();
+
+        return Inertia::render('Products/Index', [
+            'products' => $products->map(fn($p) => [
+                'id' => $p->id,
+                'name' => $p->name,
+                'price' => 'Rp ' . number_format($p->price, 0, ',', '.'),
+                'description' => $p->description,
+                'image' => $p->image ? asset('storage/' . $p->image) : null,
+                'category' => $p->category?->name,
+            ]),
+        ]);
+    }
+
+    public function publicShow($id)
+    {
+        $product = Product::with('category')->findOrFail($id);
+
+        return Inertia::render('Products/Show', [
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => 'Rp ' . number_format($product->price, 0, ',', '.'),
+                'description' => $product->description,
+                'image' => $product->image ? asset('storage/' . $product->image) : null,
+                'category' => $product->category?->name,
+            ],
         ]);
     }
 }

@@ -14,8 +14,9 @@
                 class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl"
                 @click.stop
             >
+                <!-- Header -->
                 <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
-                    <h2 class="text-2xl font-bold text-gray-800">{{ product.title }}</h2>
+                    <h2 class="text-2xl font-bold text-gray-800">{{ product.name }}</h2>
                     <button
                         @click="$emit('close')"
                         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors text-gray-500 hover:text-gray-700"
@@ -26,13 +27,15 @@
                     </button>
                 </div>
 
+                <!-- Content -->
                 <div class="p-6 md:p-8">
                     <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Image -->
                         <div class="space-y-4">
                             <div class="aspect-square rounded-xl overflow-hidden bg-gray-100">
                                 <img
-                                    :src="product.image"
-                                    :alt="product.title"
+                                    :src="imageUrl(product.image)"
+                                    :alt="product.name"
                                     class="w-full h-full object-cover"
                                 />
                             </div>
@@ -43,40 +46,44 @@
                                     class="aspect-square rounded-lg overflow-hidden bg-gray-100"
                                 >
                                     <img
-                                        :src="img"
-                                        :alt="`${product.title} ${idx + 1}`"
+                                        :src="imageUrl(img)"
+                                        :alt="`${product.name} ${idx + 1}`"
                                         class="w-full h-full object-cover"
                                     />
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Product Info -->
                         <div class="space-y-6">
                             <div>
                                 <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Price</h3>
-                                <p class="text-2xl font-bold text-amber-600">{{ product.price }}</p>
+                                <p class="text-2xl font-bold text-amber-600">
+                                    {{ product.price }}
+                                </p>
                             </div>
 
                             <div>
                                 <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Description</h3>
-                                <p class="text-gray-700 leading-relaxed">{{ product.desc }}</p>
-                            </div>
-
-                            <div>
-                                <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Material</h3>
-                                <p class="text-gray-700">{{ product.material }}</p>
+                                <p class="text-gray-700 leading-relaxed">
+                                    {{ product.description || 'No description available for this product.' }}
+                                </p>
                             </div>
 
                             <div>
                                 <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Category</h3>
                                 <span class="inline-block px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
-                                    {{ product.category }}
+                                    {{ product.category || 'Uncategorized' }}
                                 </span>
                             </div>
 
-                            <button class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-colors">
+                            <a
+                                class="block w-full bg-amber-500 hover:bg-amber-600 text-center text-white font-bold py-3 rounded-lg transition-colors"
+                                :href="`https://wa.me/6281234567890?text=Halo, saya tertarik dengan produk ${product.name}`"
+                                target="_blank"
+                            >
                                 Order via WhatsApp
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -94,4 +101,10 @@ defineProps({
 })
 
 defineEmits(['close'])
+
+// Pastikan gambar bisa diakses dari public/storage
+const imageUrl = (path) => {
+    if (!path) return '/images/no-image.png'
+    return path.startsWith('http') ? path : `/storage/${path}`
+}
 </script>

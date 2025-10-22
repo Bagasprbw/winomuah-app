@@ -186,7 +186,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue' // <-- 1. IMPORT nextTick
+import { ref, onMounted, nextTick } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import AppLayout from './AppLayout.vue'
@@ -196,87 +197,20 @@ import ProductModal from '../Components/ProductModal.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Refs for animations
+const page = usePage()
+const products = ref(page.props.products || [])
+const portfolios = ref(page.props.portfolios || [])
+
+// Refs untuk animasi & navigasi scroll
 const heroRef = ref(null)
 const productsRef = ref(null)
 const portfolioRef = ref(null)
 const customRef = ref(null)
 const contactRef = ref(null)
 
-// Modal state
+// State modal produk
 const selectedProduct = ref(null)
 
-// Dummy data
-const products = [
-    {
-        id: 1,
-        title: 'Pochita Keychain',
-        image: '/assets/Featured-products1.png',
-        price: 'Rp 8,000',
-        desc: 'Made with high-quality material, this keychain perfectly captures Pochitas adorable look.',
-        material: 'Acrylic',
-        category: 'Accessories',
-        images: [
-            '/assets/Featured-products1.png',
-            '/assets/Featured-products1.png'
-        ]
-    },
-    {
-        id: 2,
-        title: 'Owl Crochet Keychain',
-        image: '/assets/Featured-products2.png',
-        price: 'Rp 9,000',
-        desc: 'Cute handmade owl keychain from cotton yarn.',
-        material: 'Cotton Yarn',
-        category: 'Handmade',
-        images: [
-            '/assets/Featured-products2.png',
-            '/assets/Featured-products2.png'
-        ]
-    },
-    {
-        id: 3,
-        title: 'Heart Brass Pendant',
-        image: '/assets/Featured-products3.png',
-        price: 'Rp 9,000',
-        desc: 'Elegant handcrafted brass pendant in heart shape.',
-        material: 'Brass',
-        category: 'Jewelry',
-        images: [
-            '/assets/Featured-products3.png',
-            '/assets/Featured-products3.png'
-        ]
-    }
-]
-
-const portfolios = [
-    {
-        id: 1,
-        title: 'Abstract Art',
-        description: 'Colorful abstract painting',
-        image: 'https://images.unsplash.com/photo-1529101091764-c3526daf38fe?auto=format&fit=crop&w=600&q=80'
-    },
-    {
-        id: 2,
-        title: 'Portrait Drawing',
-        description: 'Realistic portrait sketch',
-        image: 'https://images.unsplash.com/photo-1549187774-b4e9b0445b06?auto=format&fit=crop&w=600&q=80'
-    },
-    {
-        id: 3,
-        title: 'Landscape Art',
-        description: 'Scenic landscape painting',
-        image: 'https://images.unsplash.com/photo-1473186505569-9c61870c11f9?auto=format&fit=crop&w=600&q=80'
-    },
-    {
-        id: 4,
-        title: 'Character Design',
-        description: 'Original character illustration',
-        image: 'https://images.unsplash.com/photo-1581349480311-9c449d3d0b50?auto=format&fit=crop&w=600&q=80'
-    }
-]
-
-// Methods
 const openProductModal = (product) => {
     selectedProduct.value = product
 }
@@ -285,11 +219,9 @@ const scrollToCustom = () => {
     customRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
-// Animation setup
-onMounted(async () => { // <-- 2. JADIKAN ASYNC
-    await nextTick() // <-- 3. TAMBAHKAN AWAIT nextTick()
+onMounted(async () => {
+    await nextTick()
 
-    // Seluruh kode GSAP-mu yang sudah ada, sekarang aman
     const sections = [heroRef, productsRef, portfolioRef, customRef, contactRef]
 
     sections.forEach((section) => {
@@ -308,7 +240,6 @@ onMounted(async () => { // <-- 2. JADIKAN ASYNC
         }
     })
 
-    // Animate product cards with stagger
     if (productsRef.value) {
         gsap.from(productsRef.value.querySelectorAll('.group'), {
             opacity: 0,
@@ -323,7 +254,6 @@ onMounted(async () => { // <-- 2. JADIKAN ASYNC
         })
     }
 
-    // Animate portfolio cards with stagger
     if (portfolioRef.value) {
         gsap.from(portfolioRef.value.querySelectorAll('.group'), {
             opacity: 0,

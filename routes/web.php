@@ -1,22 +1,25 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+// use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-});
+// Route::get('/', function () {
+//     return Inertia::render('Home');
+// });
 
 // ===============================
 // FRONTEND PRODUCT ROUTES (DODI)
 // ===============================
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'publicIndex'])->name('frontend.products.index');
 Route::get('/products/{product}', [ProductController::class, 'publicShow'])->name('frontend.products.show');
+
 
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

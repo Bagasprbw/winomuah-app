@@ -5,40 +5,43 @@ import { Link, router, usePage } from '@inertiajs/vue3'
 const page = usePage()
 const isMobileOpen = ref(false)
 
-// Scroll halus ke section (hero/contact/portfolio)
+/**
+ * Scroll halus ke section (hero/contact/portfolio)
+ * - Jika sudah di halaman Home → langsung scroll.
+ * - Jika di halaman lain → pindah ke Home, lalu scroll otomatis.
+ */
 const scrollToSection = (id) => {
-  const currentPath = page.url;
-  isMobileOpen.value = false;
+  const currentPath = page.url
+  isMobileOpen.value = false
+
   const doScroll = (targetId) => {
     setTimeout(() => {
       if (targetId === 'hero') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        return
       }
 
-      const section = document.getElementById(targetId);
+      const section = document.getElementById(targetId)
       if (section) {
-        const navbarHeight = 80;
-
-        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+        const navbarHeight = 80
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY
 
         window.scrollTo({
           top: sectionTop - navbarHeight,
           behavior: 'smooth'
-        });
+        })
       }
-    }, 100);
-  };
+    }, 400) // delay sedikit agar konten sudah ter-render
+  }
+
   if (currentPath === '/') {
-    doScroll(id);
+    doScroll(id)
   } else {
     router.visit('/', {
-      onFinish: () => {
-        doScroll(id);
-      }
-    });
+      onFinish: () => doScroll(id),
+    })
   }
-};
+}
 </script>
 
 <template>
@@ -47,16 +50,19 @@ const scrollToSection = (id) => {
   >
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
       <!-- Logo -->
-      <div class="flex items-center space-x-2 cursor-pointer" @click="scrollToSection('hero')">
+      <div
+        class="flex items-center space-x-2 cursor-pointer"
+        @click="scrollToSection('hero')"
+      >
         <img
           src="/public/assets/Logo.png"
           alt="Winomuah Logo"
-          class="w-8 h-8 rounded-full"
+          class="w-8 h-8 rounded-full object-cover"
         />
         <h1 class="text-xl font-bold text-gray-800">Winomuah Store</h1>
       </div>
 
-      <!-- Desktop Nav -->
+      <!-- Desktop Navigation -->
       <nav class="hidden md:flex space-x-8 font-medium text-gray-700">
         <button
           @click="scrollToSection('hero')"

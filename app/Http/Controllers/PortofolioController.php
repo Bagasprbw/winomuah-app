@@ -129,4 +129,15 @@ class PortofolioController extends Controller
             'portofolio' => $portofolio->load('category'),
         ]);
     }
+
+    // Frontend
+    public function publicIndex()
+{
+    $portofolios = Portofolio::where('is_published', true)->latest()->get();
+
+    return inertia('Portofolio/Index', [
+        'portofolios' => $portofolios,
+    ]);
+}
+
 }

@@ -1,5 +1,6 @@
 <template>
     <AppLayout>
+        <!-- HERO SECTION -->
         <section
             ref="heroRef"
             class="relative min-h-[600px] flex items-center justify-center overflow-hidden rounded-3xl mx-4 md:mx-8 mt-4"
@@ -46,17 +47,14 @@
             </div>
         </section>
 
-        <section
-            ref="productsRef"
-            id="products"
-            class="py-20 px-4 md:px-8"
-        >
+        <!-- FEATURED PRODUCTS -->
+        <section ref="productsRef" id="products" class="py-20 px-4 md:px-8">
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
                     Featured Products
                 </h2>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <div v-if="products.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <ProductCard
                         v-for="product in products"
                         :key="product.id"
@@ -65,27 +63,30 @@
                     />
                 </div>
 
+                <p v-else class="text-center text-gray-400 italic">Loading products...</p>
+
                 <div class="flex justify-center mt-12">
-                    <button class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-3 rounded-xl transition-all duration-300">
+                    <a
+                        href="/products"
+                        class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-3 rounded-xl transition-all duration-300"
+                    >
                         View Full Catalog
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
-                    </button>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <section
-            ref="portfolioRef"
-            class="py-20 px-4 md:px-8 bg-gradient-to-b from-amber-50 to-white"
-        >
+        <!-- PORTFOLIO -->
+        <section ref="portfolioRef" class="py-20 px-4 md:px-8 bg-gradient-to-b from-amber-50 to-white">
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
                     Portfolio
                 </h2>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div v-if="portfolios.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <PortfolioCard
                         v-for="portfolio in portfolios"
                         :key="portfolio.id"
@@ -93,21 +94,24 @@
                     />
                 </div>
 
+                <p v-else class="text-center text-gray-400 italic">Loading portfolio...</p>
+
                 <div class="flex justify-center mt-12">
-                    <button class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-3 rounded-xl transition-all duration-300">
+                    <a
+                        href="/portofolio"
+                        class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-3 rounded-xl transition-all duration-300"
+                    >
                         View Full Portfolio
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
-                    </button>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <section
-            ref="customRef"
-            class="py-20 px-4 md:px-8"
-        >
+        <!-- CUSTOM -->
+        <section ref="customRef" class="py-20 px-4 md:px-8">
             <div class="max-w-7xl mx-auto">
                 <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
                     Custom Keychain & Custom Drawing
@@ -142,11 +146,8 @@
             </div>
         </section>
 
-        <section
-            id="contact"
-            ref="contactRef"
-            class="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-amber-50"
-        >
+        <!-- CONTACT -->
+        <section id="contact" ref="contactRef" class="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-amber-50">
             <div class="max-w-3xl mx-auto text-center space-y-8">
                 <h2 class="text-4xl md:text-5xl font-bold text-gray-800">
                     Contact Me
@@ -160,33 +161,30 @@
                     class="inline-flex items-center gap-3 bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
                     </svg>
                     Contact Via WhatsApp
                 </a>
             </div>
         </section>
 
-        <a
-            href="https://wa.me/+6289649079690"
-            target="_blank"
-            class="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300 z-40"
-            aria-label="Contact via WhatsApp"
-        >
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-        </a>
+        <!-- FLOATING WHATSAPP BUTTON -->
+    <a
+      href="https://wa.me/6281234567890"
+      target="_blank"
+      class="fixed bottom-8 right-8 w-16 h-16 bg-green-500 hover:bg-green-600 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
+    >
+      <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+    </a>
 
-        <ProductModal
-            :product="selectedProduct"
-            @close="selectedProduct = null"
-        />
+        <ProductModal :product="selectedProduct" @close="selectedProduct = null" />
     </AppLayout>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, computed, watch } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -197,33 +195,27 @@ import ProductModal from '../Components/ProductModal.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// gunakan computed agar reaktif terhadap perubahan inertia
 const page = usePage()
-const products = ref(page.props.products || [])
-const portfolios = ref(page.props.portfolios || [])
+const products = computed(() => page.props.products || [])
+const portfolios = computed(() => page.props.portfolios || [])
 
-// Refs untuk animasi & navigasi scroll
+// refs untuk animasi
 const heroRef = ref(null)
 const productsRef = ref(null)
 const portfolioRef = ref(null)
 const customRef = ref(null)
 const contactRef = ref(null)
 
-// State modal produk
+// modal produk
 const selectedProduct = ref(null)
+const openProductModal = (product) => (selectedProduct.value = product)
 
-const openProductModal = (product) => {
-    selectedProduct.value = product
-}
+const scrollToCustom = () => customRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 
-const scrollToCustom = () => {
-    customRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-}
-
-onMounted(async () => {
-    await nextTick()
-
+// fungsi animasi GSAP
+const runAnimations = () => {
     const sections = [heroRef, productsRef, portfolioRef, customRef, contactRef]
-
     sections.forEach((section) => {
         if (section.value) {
             gsap.from(section.value, {
@@ -234,13 +226,21 @@ onMounted(async () => {
                 scrollTrigger: {
                     trigger: section.value,
                     start: 'top 80%',
-                    toggleActions: 'play none none reverse'
-                }
+                    toggleActions: 'play none none reverse',
+                },
             })
         }
     })
+}
 
-    if (productsRef.value) {
+onMounted(async () => {
+    await nextTick()
+    runAnimations()
+})
+
+// re-run animasi saat produk baru dimuat
+watch(products, (newVal) => {
+    if (newVal.length && productsRef.value) {
         gsap.from(productsRef.value.querySelectorAll('.group'), {
             opacity: 0,
             y: 40,
@@ -249,42 +249,14 @@ onMounted(async () => {
             ease: 'power2.out',
             scrollTrigger: {
                 trigger: productsRef.value,
-                start: 'top 70%'
-            }
-        })
-    }
-
-    if (portfolioRef.value) {
-        gsap.from(portfolioRef.value.querySelectorAll('.group'), {
-            opacity: 0,
-            scale: 0.9,
-            duration: 0.5,
-            stagger: 0.08,
-            ease: 'back.out(1.7)',
-            scrollTrigger: {
-                trigger: portfolioRef.value,
-                start: 'top 70%'
-            }
+                start: 'top 70%',
+            },
         })
     }
 })
 </script>
 
 <style scoped>
-/* Custom container query support for ultra-responsive design */
-@container (min-width: 640px) {
-    .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@container (min-width: 1024px) {
-    .product-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* Smooth scroll behavior */
 html {
     scroll-behavior: smooth;
 }

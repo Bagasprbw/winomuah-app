@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // ===============================
-// FRONTEND PRODUCT ROUTES (DODI)
+// FRONTEND ROUTES (DODI)
 // ===============================
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'publicIndex'])->name('frontend.products.index');
 Route::get('/products/{product}', [ProductController::class, 'publicShow'])->name('frontend.products.show');
+Route::get('/portofolio', [PortofolioController::class, 'publicIndex'])->name('frontend.portofolio.index');
 
 // ===============================
 // LOGIN & AUTH ROUTES

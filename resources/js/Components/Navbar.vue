@@ -1,9 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { Link, router, usePage } from '@inertiajs/vue3'
 
 const page = usePage()
 const isMobileOpen = ref(false)
+
+// ambil path saat ini
+const currentPath = computed(() => page.url.split('?')[0])
 
 /**
  * Scroll halus ke section (hero/contact/portfolio)
@@ -11,7 +14,7 @@ const isMobileOpen = ref(false)
  * - Jika di halaman lain → pindah ke Home, lalu scroll otomatis.
  */
 const scrollToSection = (id) => {
-  const currentPath = page.url
+  const isHome = currentPath.value === '/'
   isMobileOpen.value = false
 
   const doScroll = (targetId) => {
@@ -28,13 +31,13 @@ const scrollToSection = (id) => {
 
         window.scrollTo({
           top: sectionTop - navbarHeight,
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
       }
-    }, 400) // delay sedikit agar konten sudah ter-render
+    }, 400)
   }
 
-  if (currentPath === '/') {
+  if (isHome) {
     doScroll(id)
   } else {
     router.visit('/', {
@@ -42,6 +45,9 @@ const scrollToSection = (id) => {
     })
   }
 }
+
+// helper active link
+const isActive = (path) => currentPath.value === path
 </script>
 
 <template>
@@ -64,27 +70,44 @@ const scrollToSection = (id) => {
 
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex space-x-8 font-medium text-gray-700">
+        <!-- Home -->
         <button
           @click="scrollToSection('hero')"
-          class="hover:text-yellow-500 transition-colors duration-300"
+          :class="[
+            'transition-colors duration-300',
+            isActive('/') ? 'text-yellow-500 font-semibold' : 'hover:text-yellow-500',
+          ]"
         >
           Home
         </button>
 
+        <!-- Products -->
         <Link
           href="/products"
-          class="hover:text-yellow-500 transition-colors duration-300"
+          :class="[
+            'transition-colors duration-300',
+            isActive('/products')
+              ? 'text-yellow-500 font-semibold'
+              : 'hover:text-yellow-500',
+          ]"
         >
           Products
         </Link>
 
-        <button
-          @click="scrollToSection('portfolio')"
-          class="hover:text-yellow-500 transition-colors duration-300"
+        <!-- Portfolio -->
+        <Link
+          href="/portofolio"
+          :class="[
+            'transition-colors duration-300',
+            isActive('/portofolio')
+              ? 'text-yellow-500 font-semibold'
+              : 'hover:text-yellow-500',
+          ]"
         >
           Portfolio
-        </button>
+        </Link>
 
+        <!-- Contact -->
         <button
           @click="scrollToSection('contact')"
           class="hover:text-yellow-500 transition-colors duration-300"
@@ -111,25 +134,26 @@ const scrollToSection = (id) => {
         <nav class="flex flex-col p-4 space-y-3 text-gray-700 font-medium">
           <button
             @click="scrollToSection('hero')"
-            class="hover:text-yellow-500 transition"
+            :class="isActive('/') ? 'text-yellow-500 font-semibold' : ''"
           >
             Home
           </button>
 
           <Link
             href="/products"
-            class="hover:text-yellow-500 transition"
+            :class="isActive('/products') ? 'text-yellow-500 font-semibold' : ''"
             @click="isMobileOpen = false"
           >
             Products
           </Link>
 
-          <button
-            @click="scrollToSection('portfolio')"
-            class="hover:text-yellow-500 transition"
+          <Link
+            href="/portofolio"
+            :class="isActive('/portofolio') ? 'text-yellow-500 font-semibold' : ''"
+            @click="isMobileOpen = false"
           >
             Portfolio
-          </button>
+          </Link>
 
           <button
             @click="scrollToSection('contact')"

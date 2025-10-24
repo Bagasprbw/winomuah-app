@@ -5,14 +5,16 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Models\Company;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+<<<<<<< HEAD
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+=======
+>>>>>>> cb7944ccb95fac0b2e21f701c6288b85af6100e2
 // ===============================
 // FRONTEND PRODUCT ROUTES (DODI)
 // oke

@@ -140,7 +140,6 @@ const formattedPrice = computed(() => {
   return `Rp ${p.toLocaleString('id-ID')}`
 })
 
-
 // Ganti dengan nomor WA kamu
 const whatsappNumber = '6281234567890'
 const whatsappLink = computed(() => {

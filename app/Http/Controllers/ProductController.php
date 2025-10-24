@@ -122,6 +122,14 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', '🗑️ Product deleted successfully!');
     }
 
+    public function show(Product $product)
+    {
+        return Inertia::render('Admin/Products/Show', [
+            'company' => Company::first(),
+            'product' => $product->load('category'),
+        ]);
+    }
+
     // PUBLIKKKK
     public function publicIndex()
     {

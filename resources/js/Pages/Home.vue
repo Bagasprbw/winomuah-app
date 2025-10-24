@@ -1,281 +1,165 @@
 <template>
-    <AppLayout>
-        <!-- HERO SECTION -->
-        <section
-            ref="heroRef"
-            class="relative min-h-[600px] flex items-center justify-center overflow-hidden rounded-3xl mx-4 md:mx-8 mt-4"
-        >
-            <div class="absolute inset-0 from-amber-900/70 to-amber-700/60">
-                <img
-                    src="https://png.pngtree.com/background/20250107/original/pngtree-yellow-watercolor-batik-repeat-die-multi-craft-picture-image_15703879.jpg"
-                    alt="Handcrafted keychains background"
-                    class="w-full h-full object-cover mix-blend-overlay opacity-80"
-                />
-            </div>
-
-            <div class="absolute inset-0 opacity-20">
-                <svg class="w-full h-full" viewBox="0 0 1440 630" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <pattern id="batik-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-                        <circle cx="25" cy="25" r="20" fill="white" opacity="0.3"/>
-                        <circle cx="75" cy="75" r="15" fill="white" opacity="0.2"/>
-                    </pattern>
-                    <rect width="100%" height="100%" fill="url(#batik-pattern)"/>
-                </svg>
-            </div>
-
-            <div class="relative z-10 text-center px-6 py-20 max-w-5xl mx-auto">
-                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
-                    Discover the Art of Winomuah
-                </h1>
-                <p class="text-white text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow">
-                    Explore our curated collection of handcrafted goods, collaborating the rich heritage of African craftsmanship.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a
-                        href="/products"
-                        class="inline-flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
-                    >
-                        Order Now
-                    </a>
-                    <button
-                        @click="scrollToCustom"
-                        class="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-amber-600 font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
-                    >
-                        Design Your Own
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- FEATURED PRODUCTS -->
-        <section ref="productsRef" id="products" class="py-20 px-4 md:px-8">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
-                    Featured Products
-                </h2>
-
-                <div v-if="products.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    <ProductCard
-                        v-for="product in products"
-                        :key="product.id"
-                        :product="product"
-                        @click="openProductModal(product)"
-                    />
-                </div>
-
-                <p v-else class="text-center text-gray-400 italic">Loading products...</p>
-
-                <div class="flex justify-center mt-12">
-                    <a
-                        href="/products"
-                        class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-3 rounded-xl transition-all duration-300"
-                    >
-                        View Full Catalog
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- PORTFOLIO -->
-        <section ref="portfolioRef" class="py-20 px-4 md:px-8 bg-gradient-to-b from-amber-50 to-white">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
-                    Portfolio
-                </h2>
-
-                <div v-if="portfolios.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <PortfolioCard
-                        v-for="portfolio in portfolios"
-                        :key="portfolio.id"
-                        :portfolio="portfolio"
-                    />
-                </div>
-
-                <p v-else class="text-center text-gray-400 italic">Loading portfolio...</p>
-
-                <div class="flex justify-center mt-12">
-                    <a
-                        href="/portofolio"
-                        class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-3 rounded-xl transition-all duration-300"
-                    >
-                        View Full Portfolio
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- CUSTOM -->
-        <section ref="customRef" class="py-20 px-4 md:px-8">
-            <div class="max-w-7xl mx-auto">
-                <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
-                    Custom Keychain & Custom Drawing
-                </h2>
-
-                <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
-                    <div class="rounded-2xl overflow-hidden shadow-xl">
-                        <img
-                            src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/107/MTA-177923951/hello-topper_custom-keychain-gantungan-kunci-acrylic-akrilik_full01.jpg"
-                            alt="Custom Keychain Example"
-                            class="w-full h-full object-cover aspect-[4/3]"
-                        />
-                    </div>
-
-                    <div class="space-y-6">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800">
-                            Your Custom Keychain & Drawing
-                        </h3>
-                        <p class="text-gray-600 text-lg leading-relaxed">
-                            Turn your ideas into reality with our custom keychain design service.
-                            Our team of skilled designers will work with you to create a unique
-                            keychain that perfectly reflects your style and personality.
-                        </p>
-                        <button class="inline-flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105">
-                            See More
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CONTACT -->
-        <section id="contact" ref="contactRef" class="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-amber-50">
-            <div class="max-w-3xl mx-auto text-center space-y-8">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-800">
-                    Contact Me
-                </h2>
-                <p class="text-gray-600 text-lg md:text-xl">
-                    For inquiries or custom orders, please reach out to us via WhatsApp.
-                </p>
-                <a
-                    href="https://wa.me/+6289649079690"
-                    target="_blank"
-                    class="inline-flex items-center gap-3 bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
-                >
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
-                    </svg>
-                    Contact Via WhatsApp
-                </a>
-            </div>
-        </section>
-
-        <!-- FLOATING WHATSAPP BUTTON -->
-    <a
-      href="https://wa.me/6281234567890"
-      target="_blank"
-      class="fixed bottom-8 right-8 w-16 h-16 bg-green-500 hover:bg-green-600 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
+  <Transition
+    enter-active-class="transition-opacity duration-300"
+    enter-from-class="opacity-0"
+    leave-active-class="transition-opacity duration-300"
+    leave-to-class="opacity-0"
+  >
+    <div
+      v-if="product"
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 px-4"
+      @click.self="$emit('close')"
     >
-      <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-      </svg>
-    </a>
+      <div
+        class="bg-white rounded-2xl w-full max-w-5xl shadow-2xl overflow-hidden animate-fadeInUp"
+        @click.stop
+      >
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+          <h2 class="text-3xl font-extrabold text-[#f9a825] tracking-tight">
+            {{ title }}
+          </h2>
+          <button
+            @click="$emit('close')"
+            class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors text-gray-500 hover:text-gray-700"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
 
-        <ProductModal :product="selectedProduct" @close="selectedProduct = null" />
-    </AppLayout>
+        <!-- Content -->
+        <div class="grid md:grid-cols-2 gap-8 p-8 max-h-[85vh] overflow-y-auto">
+          <!-- Left: Image -->
+          <div class="space-y-4">
+            <div class="aspect-square bg-gray-50 rounded-xl overflow-hidden shadow-sm border border-gray-100">
+              <img
+                :src="mainImage"
+                :alt="title"
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+
+            <div v-if="images.length" class="grid grid-cols-3 gap-3">
+              <div
+                v-for="(img, idx) in images"
+                :key="idx"
+                class="aspect-square rounded-lg overflow-hidden bg-gray-100 border border-transparent hover:border-[#f9a825] transition"
+              >
+                <img
+                  :src="resolveImage(img)"
+                  :alt="`${title} ${idx + 1}`"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Details -->
+          <div class="space-y-6">
+            <!-- Price -->
+            <div>
+              <h3 class="text-sm font-semibold text-[#f9a825] uppercase mb-1 tracking-wide">Price</h3>
+              <p class="text-3xl font-extrabold text-[#f9a825]">{{ formattedPrice }}</p>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <h3 class="text-sm font-semibold text-[#f9a825] uppercase mb-1 tracking-wide">Description</h3>
+              <p class="text-[#333] leading-relaxed whitespace-pre-line">{{ desc }}</p>
+            </div>
+
+            <!-- Material -->
+            <div v-if="material">
+              <h3 class="text-sm font-semibold text-[#f9a825] uppercase mb-1 tracking-wide">Material</h3>
+              <p class="text-[#333]">{{ material }}</p>
+            </div>
+
+            <!-- Category -->
+            <div v-if="category">
+              <h3 class="text-sm font-semibold text-[#f9a825] uppercase mb-1 tracking-wide">Category</h3>
+              <span class="inline-block px-4 py-1.5 bg-[#fff7e0] text-[#333] rounded-full text-sm font-medium shadow-sm">
+                {{ category }}
+              </span>
+            </div>
+
+            <!-- WhatsApp Order Button -->
+            <div class="pt-4">
+              <a
+                :href="whatsappLink"
+                target="_blank"
+                class="block w-full text-center bg-[#f9a825] hover:bg-[#fbc02d] text-white font-semibold py-3 rounded-xl shadow-md transition"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="inline w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M16.7 14.3c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2-.8 1-.9 1.1-.3.2-.6.1c-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1s0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5s0-.4 0-.5c0-.2-.7-1.6-.9-2.2s-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3 1.8.8 2.5.9 3.4.8.6-.1 1.1-.5 1.2-.9.1-.4.1-.7.1-.8s-.1-.1-.3-.2z" />
+                </svg>
+                Order via WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Transition>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, computed, watch } from 'vue'
-import { usePage } from '@inertiajs/vue3'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import AppLayout from './AppLayout.vue'
-import ProductCard from '../Components/ProductCard.vue'
-import PortfolioCard from '../Components/PortfolioCard.vue'
-import ProductModal from '../Components/ProductModal.vue'
+import { computed } from 'vue'
 
-gsap.registerPlugin(ScrollTrigger)
+const props = defineProps({
+  product: {
+    type: Object,
+    default: null
+  }
+})
+defineEmits(['close'])
 
-// gunakan computed agar reaktif terhadap perubahan inertia
-const page = usePage()
-const products = computed(() => page.props.products || [])
-const portfolios = computed(() => page.props.portfolios || [])
-
-// refs untuk animasi
-const heroRef = ref(null)
-const productsRef = ref(null)
-const portfolioRef = ref(null)
-const customRef = ref(null)
-const contactRef = ref(null)
-
-// modal produk
-const selectedProduct = ref(null)
-const openProductModal = (product) => (selectedProduct.value = product)
-
-const scrollToCustom = () => customRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-
-// fungsi animasi GSAP
-const runAnimations = () => {
-    const sections = [heroRef, productsRef, portfolioRef, customRef, contactRef]
-    sections.forEach((section) => {
-        if (section.value) {
-            gsap.from(section.value, {
-                opacity: 0,
-                y: 60,
-                duration: 1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: section.value,
-                    start: 'top 80%',
-                    toggleActions: 'play none none reverse',
-                },
-            })
-        }
-    })
+const title = computed(() => props.product?.title ?? props.product?.name ?? 'Untitled')
+const desc = computed(() => props.product?.desc ?? props.product?.description ?? '')
+const material = computed(() => props.product?.material ?? props.product?.materials ?? '')
+const category = computed(() => {
+  if (!props.product) return null
+  if (typeof props.product.category === 'string') return props.product.category
+  if (props.product.category?.name) return props.product.category.name
+  return null
+})
+const images = computed(() => Array.isArray(props.product?.images) ? props.product.images : [])
+function resolveImage(path) {
+  if (!path) return '/assets/placeholder.png'
+  if (path.startsWith('http') || path.startsWith('/')) return path
+  return `/storage/${path}`
 }
-
-onMounted(async () => {
-    await nextTick()
-    runAnimations()
+const mainImage = computed(() => {
+  if (!props.product) return '/assets/placeholder.png'
+  return resolveImage(props.product.image ?? images.value[0])
 })
 
-// re-run animasi saat produk baru dimuat
-watch(products, (newVal) => {
-    if (newVal.length && productsRef.value) {
-        gsap.from(productsRef.value.querySelectorAll('.group'), {
-            opacity: 0,
-            y: 40,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: 'power2.out',
-            scrollTrigger: {
-                trigger: productsRef.value,
-                start: 'top 70%',
-            },
-        })
-    }
+const formattedPrice = computed(() => {
+  const p = Number(props.product?.price ?? 0)
+  return `Rp ${p.toLocaleString('id-ID')}`
+})
+
+// Ganti dengan nomor WA kamu
+const whatsappNumber = '6281234567890'
+const whatsappLink = computed(() => {
+  const text = encodeURIComponent(`Halo, saya tertarik dengan produk "${title.value}" seharga ${formattedPrice.value}`)
+  return `https://wa.me/${whatsappNumber}?text=${text}`
 })
 </script>
 
 <style scoped>
-html {
-    scroll-behavior: smooth;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #f59e0b;
-    border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #d97706;
+.animate-fadeInUp {
+  animation: fadeInUp 0.35s ease-out;
 }
 </style>

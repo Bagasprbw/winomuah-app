@@ -5,22 +5,21 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Models\Company;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-<<<<<<< HEAD
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-=======
->>>>>>> cb7944ccb95fac0b2e21f701c6288b85af6100e2
 // ===============================
 // FRONTEND PRODUCT ROUTES (DODI)
-// oke
 // ===============================
 Route::get('/products', [ProductController::class, 'publicIndex'])->name('frontend.products.index');
 Route::get('/products/{product}', [ProductController::class, 'publicShow'])->name('frontend.products.show');
+Route::get('/portofolio', [PortofolioController::class, 'publicIndex'])->name('frontend.portofolio.index');
+Route::get('/portofolio/{portofolio}', [PortofolioController::class, 'publicShow'])->name('frontend.portofolio.show');
 
 // Login
 Route::get('/login', function () {

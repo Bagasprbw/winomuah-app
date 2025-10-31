@@ -30,19 +30,20 @@ class HomeController extends Controller
         $portofolios = Portofolio::with('category')
             ->where('is_published', true)
             ->latest()
-            ->take(8)
+            ->take(4)
             ->get()
             ->map(function ($p) {
                 return [
                     'id' => $p->id,
                     'title' => $p->title,
                     'description' => $p->description,
+                    'tools' => $p->tools,
                     'image' => $p->image ? asset('storage/' . $p->image) : null,
                     'category' => $p->category ? $p->category->name : null,
                 ];
             });
 
-        return Inertia::render('Home', [
+        return Inertia::render('LandingPage/Home', [
             'products' => $products,
             'portofolios' => $portofolios,
         ]);

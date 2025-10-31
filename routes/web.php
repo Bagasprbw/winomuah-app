@@ -14,7 +14,7 @@ use Inertia\Inertia;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // ===============================
-// FRONTEND PRODUCT ROUTES (DODI)
+// FRONTEND ROUTES (DODI)
 // ===============================
 Route::get('/products', [ProductController::class, 'publicIndex'])->name('frontend.products.index');
 Route::get('/products/{product}', [ProductController::class, 'publicShow'])->name('frontend.products.show');

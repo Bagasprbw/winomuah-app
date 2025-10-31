@@ -131,13 +131,25 @@ class PortofolioController extends Controller
     }
 
     // Frontend
-    public function publicIndex()
+public function publicIndex()
 {
-    $portofolios = Portofolio::where('is_published', true)->latest()->get();
+    $portofolios = Portofolio::where('is_published', true)
+        ->with('category')
+        ->latest()
+        ->get()
+        ->map(fn($p) => [
+            'id' => $p->id,
+            'title' => $p->title,
+            'description' => $p->description,
+            'tools' => $p->tools,
+            'image' => $p->image ? asset('storage/' . $p->image) : null,
+            'category' => $p->category?->name,
+        ]);
 
     return inertia('Portofolio/Index', [
         'portofolios' => $portofolios,
     ]);
 }
+
 
 }

@@ -109,17 +109,6 @@ const selectImage = (imageUrl) => {
               <!-- Divider -->
               <div class="border-t border-gray-200"></div>
 
-              <!-- Material/Bahan Section -->
-              <div class="space-y-2">
-                <h2 class="text-xl font-bold text-gray-900">Bahan</h2>
-                <p class="text-gray-700 text-lg">
-                  {{ product.category || '-' }}
-                </p>
-              </div>
-
-              <!-- Divider -->
-              <div class="border-t border-gray-200"></div>
-
               <!-- Category Section -->
               <div class="space-y-2">
                 <h2 class="text-xl font-bold text-gray-900">Category</h2>
@@ -161,7 +150,7 @@ const selectImage = (imageUrl) => {
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Placeholder untuk related products -->
             <div class="text-center text-gray-400 col-span-full py-8">
-              Ini Nanti Opsional 
+              Ini Nanti Opsional
             </div>
           </div>
         </div>

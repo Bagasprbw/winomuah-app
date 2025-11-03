@@ -14,11 +14,12 @@ use Inertia\Inertia;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // ===============================
-// FRONTEND PRODUCT ROUTES (DODI)
-// oke
+// FRONTEND ROUTES (DODI)
 // ===============================
 Route::get('/products', [ProductController::class, 'publicIndex'])->name('frontend.products.index');
 Route::get('/products/{product}', [ProductController::class, 'publicShow'])->name('frontend.products.show');
+Route::get('/portofolio', [PortofolioController::class, 'publicIndex'])->name('frontend.portofolio.index');
+Route::get('/portofolio/{portofolio}', [PortofolioController::class, 'publicShow'])->name('frontend.portofolio.show');
 
 // Login
 Route::get('/login', function () {

@@ -46,7 +46,6 @@
 
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-
                         <div class="flex space-x-2">
                             <select v-model="form.category_id"
                                 class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#f9a825] focus:outline-none"
@@ -88,24 +87,56 @@
                 </div>
             </form>
 
-            <!-- Modal Add Category -->
+            <!-- Modal Add/Delete Category -->
             <transition name="fade">
                 <div v-if="showAddCategory" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                    <div class="bg-white rounded-xl p-6 w-[350px] shadow-lg">
-                        <h2 class="text-lg font-bold text-[#f9a825] mb-4">
-                            Add New Category
+                    <div class="bg-white rounded-xl p-6 w-[400px] shadow-lg relative">
+
+                        <!-- Alert di dalam modal -->
+                        <transition name="fade-shake">
+                            <div v-if="alertMessage" :class="[
+                                'mb-4 text-sm px-5 py-2 text-center rounded-lg font-medium shadow-sm',
+                                alertType === 'success'
+                                    ? 'bg-[#fff3e0] border border-[#fbc02d] text-[#795548]'
+                                    : 'bg-red-100 border border-red-300 text-red-700'
+                            ]">
+                                <i :class="[
+                                    'fa-solid mr-2',
+                                    alertType === 'success' ? 'fa-circle-check text-[#f9a825]' : 'fa-circle-xmark text-red-500'
+                                ]"></i>
+                                {{ alertMessage }}
+                            </div>
+                        </transition>
+
+
+
+                        <h2 class="text-lg font-bold text-[#f9a825] mb-4 mt-8">
+                            Manage Categories
                         </h2>
-                        <input v-model="newCategory" type="text" placeholder="Category name"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:ring-2 focus:ring-[#f9a825]" />
-                        <div class="flex justify-end space-x-2">
-                            <button @click="showAddCategory = false"
-                                class="bg-gray-200 px-3 py-1 rounded-lg hover:bg-gray-300">
-                                Cancel
-                            </button>
+
+                        <!-- Input Tambah -->
+                        <div class="flex mb-4 space-x-2">
+                            <input v-model="newCategory" type="text" placeholder="Category name"
+                                @keyup.enter="addCategory"
+                                class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#f9a825]" />
                             <button @click="addCategory"
-                                class="bg-[#f9a825] text-white px-4 py-1 rounded-lg hover:bg-[#fbc02d]">
+                                class="bg-[#f9a825] text-white px-4 py-2 rounded-lg hover:bg-[#fbc02d] font-semibold">
                                 Save
                             </button>
+                        </div>
+
+                        <!-- Daftar kategori -->
+                        <ul class="space-y-2 max-h-60 overflow-y-auto border-t pt-2">
+                            <li v-for="cat in categories" :key="cat.id" class="flex justify-between items-center">
+                                <span>{{ cat.name }}</span>
+                                <button @click="confirmDelete(cat)"
+                                    class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+                            </li>
+                        </ul>
+
+                        <div class="flex justify-end mt-5">
+                            <button @click="showAddCategory = false"
+                                class="bg-gray-200 px-3 py-1 rounded-lg hover:bg-gray-300">Close</button>
                         </div>
                     </div>
                 </div>
@@ -135,6 +166,16 @@ const form = ref({
 const preview = ref(null)
 const showAddCategory = ref(false)
 const newCategory = ref('')
+const alertMessage = ref(null)
+const alertType = ref('success')
+
+function showAlert(message, type = 'success') {
+    alertMessage.value = message
+    alertType.value = type
+    setTimeout(() => {
+        alertMessage.value = null
+    }, 3000)
+}
 
 function handleImageUpload(e) {
     const file = e.target.files[0]
@@ -153,12 +194,36 @@ function addCategory() {
         { name: newCategory.value, type: 'product' },
         {
             onSuccess: () => {
-                showAddCategory.value = false
+                showAlert('✅ Category added successfully!', 'success')
                 newCategory.value = ''
                 router.reload({ only: ['categories'] })
             },
+            onError: () => {
+                showAlert('❌ Failed to add category.', 'error')
+            },
         }
     )
+}
+
+// hapus kategori
+function confirmDelete(cat) {
+    if (
+        !confirm(
+            `⚠️ Category "${cat.name}" may contain products.\nDeleting this category will also remove related products and their images.\n\nDo you want to continue?`
+        )
+    ) {
+        return
+    }
+
+    router.delete(`/admin/categories/${cat.id}`, {
+        onSuccess: () => {
+            showAlert('🗑️ Category deleted successfully!', 'success')
+            router.reload({ only: ['categories'] })
+        },
+        onError: () => {
+            showAlert('❌ Failed to delete category.', 'error')
+        },
+    })
 }
 
 // submit produk baru
@@ -180,13 +245,41 @@ function submitForm() {
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.3s ease;
+.fade-shake-enter-active,
+.fade-shake-leave-active {
+    transition: all 0.4s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.fade-shake-enter-from,
+.fade-shake-leave-to {
     opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* efek goyang */
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-3px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.fade-shake-enter-active {
+    animation: shake 0.4s ease-in-out;
 }
 </style>

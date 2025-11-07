@@ -44,6 +44,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::get('/company', [CompanyController::class, 'index'])->name('company.index');
     Route::post('/company/update', [CompanyController::class, 'update'])->name('company.update');
+
     Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
 });
 

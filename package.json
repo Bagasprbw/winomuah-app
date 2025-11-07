@@ -21,6 +21,7 @@
         "@inertiajs/vue3": "^2.2.8",
         "gsap": "^3.13.0",
         "lucide-vue-next": "^0.545.0",
+        "sweetalert2": "^11.26.3",
         "vue": "^3.5.22"
     }
 }

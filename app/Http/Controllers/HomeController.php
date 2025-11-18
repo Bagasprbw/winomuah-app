@@ -14,7 +14,7 @@ class HomeController extends Controller
         $products = Product::with('category')
             ->where('is_published', true)
             ->latest()
-            ->take(6)
+            ->take(3)
             ->get()
             ->map(function ($p) {
                 return [

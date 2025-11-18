@@ -2,20 +2,20 @@
 import { ref, computed } from 'vue'
 import { Link, router, usePage } from '@inertiajs/vue3'
 
+const logoImage = '/assets/Logo.png';
+
 const page = usePage()
 const isMobileOpen = ref(false)
 
-// ambil path saat ini
+// Ambil path saat ini
 const currentPath = computed(() => page.url.split('?')[0])
 
 /**
  * Scroll halus ke section (hero/contact/portfolio)
- * - Jika sudah di halaman Home → langsung scroll.
- * - Jika di halaman lain → pindah ke Home, lalu scroll otomatis.
  */
 const scrollToSection = (id) => {
   const isHome = currentPath.value === '/'
-  isMobileOpen.value = false
+  isMobileOpen.value = false // Tutup menu mobile otomatis
 
   const doScroll = (targetId) => {
     setTimeout(() => {
@@ -24,9 +24,10 @@ const scrollToSection = (id) => {
         return
       }
 
+      // Pastikan ID-nya sesuai (misal "contact", "portfolio", dll)
       const section = document.getElementById(targetId)
       if (section) {
-        const navbarHeight = 80
+        const navbarHeight = 80 // Sesuaikan tinggi navbar
         const sectionTop = section.getBoundingClientRect().top + window.scrollY
 
         window.scrollTo({
@@ -34,7 +35,7 @@ const scrollToSection = (id) => {
           behavior: 'smooth',
         })
       }
-    }, 400)
+    }, 400) // Waktu tunggu agar router.visit selesai
   }
 
   if (isHome) {
@@ -46,13 +47,13 @@ const scrollToSection = (id) => {
   }
 }
 
-// helper active link
+// Helper active link
 const isActive = (path) => currentPath.value === path
 </script>
 
 <template>
   <header
-    class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50 transition-all duration-300"
+    class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50 transition-all duration-300 relative"
   >
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
       <!-- Logo -->
@@ -61,16 +62,15 @@ const isActive = (path) => currentPath.value === path
         @click="scrollToSection('hero')"
       >
         <img
-          src="/public/assets/Logo.png"
+          :src="logoImage"
           alt="Winomuah Logo"
           class="w-8 h-8 rounded-full object-cover"
         />
         <h1 class="text-xl font-bold text-gray-800">Winomuah Store</h1>
       </div>
 
-      <!-- Desktop Navigation -->
+      <!-- Navbar Desktop -->
       <nav class="hidden md:flex space-x-8 font-medium text-gray-700">
-        <!-- Home -->
         <button
           @click="scrollToSection('hero')"
           :class="[
@@ -81,7 +81,6 @@ const isActive = (path) => currentPath.value === path
           Home
         </button>
 
-        <!-- Products -->
         <Link
           href="/products"
           :class="[
@@ -94,7 +93,6 @@ const isActive = (path) => currentPath.value === path
           Products
         </Link>
 
-        <!-- Portfolio -->
         <Link
           href="/portofolio"
           :class="[
@@ -107,7 +105,6 @@ const isActive = (path) => currentPath.value === path
           Portfolio
         </Link>
 
-        <!-- Contact -->
         <button
           @click="scrollToSection('contact')"
           class="hover:text-yellow-500 transition-colors duration-300"
@@ -116,32 +113,66 @@ const isActive = (path) => currentPath.value === path
         </button>
       </nav>
 
-      <!-- Mobile Toggle -->
+      <!-- Toggle Mobile -->
       <button
         @click="isMobileOpen = !isMobileOpen"
-        class="md:hidden text-yellow-500 focus:outline-none"
+        class="md:hidden text-yellow-500 focus:outline-none w-8 h-8 flex items-center justify-center"
+        aria-label="Toggle menu"
       >
-        <i :class="isMobileOpen ? 'fa fa-times' : 'fa fa-bars'"></i>
+        <svg
+          v-if="isMobileOpen"
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+        <svg
+          v-else
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M4 6h16M4 12h16m-7 6h7"
+          />
+        </svg>
       </button>
     </div>
 
-    <!-- Mobile Menu -->
-    <transition name="fade">
+    <!-- Navbar Mobile -->
+    <transition name="slide-fade">
       <div
         v-if="isMobileOpen"
-        class="md:hidden bg-white border-t border-gray-100 shadow-inner"
+        class="md:hidden absolute top-full left-0 right-0 z-40 bg-white shadow-xl rounded-b-2xl overflow-hidden border-t border-gray-100"
       >
-        <nav class="flex flex-col p-4 space-y-3 text-gray-700 font-medium">
+        <nav class="flex flex-col items-start p-6 space-y-4 text-gray-700 font-medium">
           <button
             @click="scrollToSection('hero')"
-            :class="isActive('/') ? 'text-yellow-500 font-semibold' : ''"
+            :class="[
+              'w-full text-left',
+              isActive('/') ? 'text-yellow-500 font-semibold' : '',
+            ]"
           >
             Home
           </button>
 
           <Link
             href="/products"
-            :class="isActive('/products') ? 'text-yellow-500 font-semibold' : ''"
+            :class="[
+              'w-full text-left',
+              isActive('/products') ? 'text-yellow-500 font-semibold' : '',
+            ]"
             @click="isMobileOpen = false"
           >
             Products
@@ -149,7 +180,10 @@ const isActive = (path) => currentPath.value === path
 
           <Link
             href="/portofolio"
-            :class="isActive('/portofolio') ? 'text-yellow-500 font-semibold' : ''"
+            :class="[
+              'w-full text-left',
+              isActive('/portofolio') ? 'text-yellow-500 font-semibold' : '',
+            ]"
             @click="isMobileOpen = false"
           >
             Portfolio
@@ -157,9 +191,9 @@ const isActive = (path) => currentPath.value === path
 
           <button
             @click="scrollToSection('contact')"
-            class="hover:text-yellow-500 transition"
+            class="w-full text-left hover:text-yellow-500 transition"
           >
-            Contact Me
+            Contact
           </button>
         </nav>
       </div>
@@ -168,12 +202,14 @@ const isActive = (path) => currentPath.value === path
 </template>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
+/* Transisi slide-fade */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease-out;
 }
-.fade-enter-from,
-.fade-leave-to {
+.slide-fade-enter-from,
+.slide-fade-leave-to {
   opacity: 0;
+  transform: translateY(-10px);
 }
 </style>

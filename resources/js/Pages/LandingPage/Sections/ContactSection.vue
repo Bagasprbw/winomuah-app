@@ -1,6 +1,6 @@
 <template>
-  <section id="contact" class="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-amber-50">
-    <div class="max-w-3xl mx-auto text-center space-y-8">
+  <section ref="sectionRef" id="contact" class="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-amber-50">
+    <div ref="contentRef" class="max-w-3xl mx-auto text-center space-y-8">
       <h2 class="text-4xl md:text-5xl font-bold text-gray-800">Contact Me</h2>
       <p class="text-gray-600 text-lg md:text-xl">
         For inquiries or custom orders, please reach out to us via WhatsApp.
@@ -20,3 +20,35 @@
     </div>
   </section>
 </template>
+
+<script setup>
+// --- Import Baru untuk Animasi ---
+import { ref, onMounted } from 'vue';
+import { gsap } from 'gsap';
+
+// --- Logika Animasi GSAP ---
+const sectionRef = ref(null);
+const contentRef = ref(null);
+
+onMounted(() => {
+  gsap.set(contentRef.value.children, { opacity: 0, y: 30 });
+
+  // Buat timeline dengan ScrollTrigger
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: sectionRef.value,
+      start: "top 85%",
+      toggleActions: "play none none reverse",
+    }
+  });
+
+  // Animasikan elemen-elemen (h2, p, a) satu per satu
+  tl.to(contentRef.value.children, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: "power2.out"
+  });
+});
+</script>

@@ -67,11 +67,9 @@ const selectImage = (imageUrl) => {
 
 // ====== Tutup Modal ======
 const closeModal = async () => {
-  // Disable pointer event selama animasi
   if (!backdropRef.value) return
   backdropRef.value.style.pointerEvents = "none"
 
-  // Jalankan animasi keluar
   await new Promise((resolve) => {
     gsap.to('.modal-left', { x: -40, opacity: 0, duration: 0.3, ease: 'power2.in' })
     gsap.to('.modal-right', { x: 40, opacity: 0, duration: 0.3, ease: 'power2.in' })
@@ -83,7 +81,6 @@ const closeModal = async () => {
     })
   })
 
-  // Tunggu frame berikut biar re-render bersih
   requestAnimationFrame(() => {
     emit('close')
   })
@@ -95,35 +92,30 @@ const handleEscape = (e) => {
 
 // ====== Animasi Masuk (GSAP) ======
 const animateIn = () => {
-  // Fade in backdrop
   gsap.fromTo(
     backdropRef.value,
     { opacity: 0 },
     { opacity: 1, duration: 0.4, ease: 'power2.out' }
   )
 
-  // Scale + fade modal container
   gsap.fromTo(
     contentRef.value,
     { scale: 0.9, opacity: 0 },
     { scale: 1, opacity: 1, duration: 0.5, ease: 'power3.out' }
   )
 
-  // Left side slide-in
   gsap.fromTo(
     '.modal-left',
     { x: -50, opacity: 0 },
     { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out', delay: 0.2 }
   )
 
-  // Right side slide-in
   gsap.fromTo(
     '.modal-right',
     { x: 50, opacity: 0 },
     { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out', delay: 0.25 }
   )
 
-  // Info items stagger
   gsap.fromTo(
     '.info-item',
     { opacity: 0, y: 15 },
@@ -143,21 +135,18 @@ onUnmounted(() => {
 
 <template>
   <div v-if="product">
-    <!-- Backdrop -->
     <div
       ref="backdropRef"
       class="fixed inset-0 bg-black/60 backdrop-blur-md z-50"
       @click="closeModal"
     ></div>
 
-    <!-- Modal Container -->
     <div class="fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none">
-      <div
+        <div
         ref="contentRef"
-        class="bg-[#FAF8F3] rounded-3xl shadow-2xl w-full max-w-6xl max-h-[85vh] overflow-hidden pointer-events-auto relative"
+        class="bg-[#FAF8F3] rounded-3xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto overflow-x-hidden pointer-events-auto relative"
         @click.stop
-      >
-        <!-- Tombol Close -->
+        >
         <button
           @click="closeModal"
           class="absolute top-6 right-6 w-11 h-11 bg-white/90 hover:bg-white rounded-full shadow-md flex items-center justify-center transition-all duration-300 hover:scale-110 hover:rotate-90 group z-20"
@@ -173,9 +162,7 @@ onUnmounted(() => {
           </svg>
         </button>
 
-        <!-- Konten Modal -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 h-full overflow-y-auto overflow-x-hidden">
-          <!-- Kiri (Gambar) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2">
           <div class="modal-left bg-white p-8 lg:p-12 flex flex-col justify-center">
             <div class="w-full max-w-md rounded-2xl overflow-hidden bg-gray-100 shadow-xl mx-auto">
               <img
@@ -196,7 +183,6 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <!-- Thumbnail -->
             <div v-if="thumbnails.length > 1" class="flex gap-3 justify-center mt-4 flex-wrap">
               <button
                 v-for="(img, i) in thumbnails"
@@ -212,10 +198,8 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <!-- Kanan (Informasi Produk) -->
           <div class="modal-right bg-[#FAF8F3] p-8 lg:p-12 flex flex-col justify-center">
             <div class="space-y-8 max-w-lg">
-              <!-- Breadcrumb -->
               <nav class="info-item flex items-center gap-2 text-sm">
                 <span class="text-amber-600 hover:text-amber-700 font-semibold cursor-pointer">
                   Products
@@ -226,7 +210,6 @@ onUnmounted(() => {
                 <span class="text-gray-700 font-medium">{{ product.name }}</span>
               </nav>
 
-              <!-- Judul & Deskripsi -->
               <div class="info-item">
                 <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-3">
                   {{ product.name }}
@@ -238,7 +221,6 @@ onUnmounted(() => {
 
               <div class="info-item border-t border-gray-300"></div>
 
-              <!-- Harga -->
               <div class="info-item">
                 <h2 class="text-lg font-bold text-gray-900 mb-2">Price</h2>
                 <p class="text-2xl font-bold text-amber-600">
@@ -253,7 +235,6 @@ onUnmounted(() => {
 
               <div class="info-item border-t border-gray-300"></div>
 
-              <!-- Kategori -->
               <div v-if="product.category" class="info-item">
                 <h2 class="text-lg font-bold text-gray-900 mb-2">Category</h2>
                 <span class="inline-block px-4 py-2 bg-amber-100 text-amber-800 rounded-full font-medium text-sm">
@@ -261,7 +242,6 @@ onUnmounted(() => {
                 </span>
               </div>
 
-              <!-- Tombol Aksi -->
               <div class="info-item pt-2 flex justify-center">
                 <a
                   :href="`https://wa.me/6281234567890?text=Halo, saya tertarik dengan produk ${product.name}`"

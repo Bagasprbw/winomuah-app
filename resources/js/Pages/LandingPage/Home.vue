@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref } from "vue"; // <-- Hapus onMounted & nextTick
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -65,6 +65,7 @@ import ProductModal from "@/Components/ProductModal.vue";
 import PortofolioModal from "@/Components/PortofolioModal.vue";
 import CustomModal from "@/Components/CustomModal.vue";
 
+// Registrasi GSAP
 gsap.registerPlugin(ScrollTrigger);
 
 // Props dari Laravel
@@ -87,32 +88,21 @@ const openPortofolioModal = (portofolio) => {
     selectedPortofolio.value = portofolio;
 };
 
+// FUNGSI SCROLL
 const scrollToSection = (sectionId) => {
-    const section = document.getElementById(`${sectionId}-section`);
-    section?.scrollIntoView({ behavior: "smooth", block: "center" });
-};
+    const section = document.getElementById(sectionId);
 
-// Animations
-onMounted(async () => {
-    await nextTick();
+    if (section) {
+        const navbarHeight = 80;
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
 
-    const sections = document.querySelectorAll("section");
-    sections.forEach((section) => {
-        gsap.from(section, {
-            opacity: 0,
-            y: 60,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: section,
-                start: "top 80%",
-                toggleActions: "play none none reverse",
-            },
+        window.scrollTo({
+            top: sectionTop - navbarHeight,
+            behavior: "smooth",
         });
-    });
-});
+    }
+};
 </script>
-
 <style scoped>
 html {
     scroll-behavior: smooth;

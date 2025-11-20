@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import MainLayout from '../AppLayout.vue';
+import { usePage } from '@inertiajs/vue3'
+
 
 // Props dari Laravel Controller
 const props = defineProps({
@@ -120,7 +122,7 @@ const selectImage = (imageUrl) => {
               <!-- Action Buttons -->
               <div class="pt-4 space-y-3">
                 <a
-                  :href="`https://wa.me/6281234567890?text=Hi, saya tertarik dengan produk ${product.name}`"
+                  :href="`https://wa.me/${usePage().props.company.phone}?text=Hi, saya tertarik dengan produk ${product.name}`"
                   target="_blank"
                   class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
                 >
@@ -159,7 +161,7 @@ const selectImage = (imageUrl) => {
 
     <!-- WhatsApp FAB -->
     <a
-      :href="`https://wa.me/6281234567890?text=Hi, saya tertarik dengan produk ${product.name}`"
+      :href="`https://wa.me/${usePage().props.company.phone}?text=Hi, saya tertarik dengan produk ${product.name}`"
       target="_blank"
       class="fixed bottom-8 right-8 w-16 h-16 bg-green-500 hover:bg-green-600 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
     >

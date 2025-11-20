@@ -1,46 +1,84 @@
 <template>
   <footer ref="footerRef" class="bg-[#fff3da] text-center py-6 text-gray-700 border-t">
+
+    <!-- Sosial Media -->
     <div class="flex justify-center space-x-4 mb-3">
-      <i class="fa-brands fa-tiktok text-xl"></i>
-      <i class="fa-brands fa-instagram text-xl"></i>
+
+      <!-- TikTok (belum ada di DB) -->
+      <a
+        href="#"
+        class="hover:text-black transition"
+        aria-label="TikTok"
+      >
+        <i class="fa-brands fa-tiktok text-xl"></i>
+      </a>
+
+      <!-- Instagram Dinamis -->
+      <a
+        v-if="company.instagram"
+        :href="`https://instagram.com/${company.instagram}`"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-pink-600 transition"
+        aria-label="Instagram"
+      >
+        <i class="fa-brands fa-instagram text-xl"></i>
+      </a>
+
     </div>
-    <p class="text-sm">&copy; 2025 Winomuah Store. All rights reserved.</p>
-    <p class="text-sm">Jl. Ir. Soekarno No.8 Surakarta, Jawa Tengah</p>
+
+    <!-- Nama Company -->
+    <p class="text-sm">
+      &copy; {{ currentYear }} {{ company.company_name ?? 'Company Name' }}. All rights reserved.
+    </p>
+
+    <!-- Alamat Company -->
+    <p class="text-sm">
+      {{ company.address ?? 'Alamat belum diatur' }}
+    </p>
+
   </footer>
 </template>
 
 <script setup>
-// --- Import Baru untuk Animasi ---
-import { ref, onMounted } from 'vue';
-import { gsap } from 'gsap';
+import { ref, computed, onMounted } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+import { gsap } from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
 
-// --- Logika Animasi GSAP ---
-const footerRef = ref(null);
+// Register ScrollTrigger
+gsap.registerPlugin(ScrollTrigger)
+
+// Ambil data company dari Inertia
+const page = usePage()
+const company = computed(() => page.props.company ?? {})
+
+// Tahun otomatis
+const currentYear = new Date().getFullYear()
+
+// Animasi
+const footerRef = ref(null)
 
 onMounted(() => {
-  // Pastikan elemennya ada
   if (footerRef.value && footerRef.value.children) {
 
-    // Sembunyikan semua anak dari footer (div ikon, p, p)
-    gsap.set(footerRef.value.children, { opacity: 0, y: 30 });
+    gsap.set(footerRef.value.children, { opacity: 0, y: 30 })
 
-    // Buat timeline dengan ScrollTrigger
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: footerRef.value,
-        start: "top 95%", 
+        start: "top 95%",
         toggleActions: "play none none reverse",
       }
-    });
+    })
 
-    // Animasikan semua anak (div ikon, p, p) satu per satu
     tl.to(footerRef.value.children, {
       opacity: 1,
       y: 0,
       duration: 0.8,
       stagger: 0.15,
       ease: "power2.out"
-    });
+    })
   }
-});
+})
 </script>

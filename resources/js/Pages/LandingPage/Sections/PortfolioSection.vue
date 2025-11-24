@@ -107,6 +107,6 @@ onMounted(() => {
     y: 0,
     duration: 0.8,
     ease: "power2.out"
-  }, "-=0.3"); 
+  }, "-=0.3");
 });
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <section ref="sectionRef" id="custom" class="py-20 px-4 md:px-8">
+  <section ref="sectionRef" id="custom" class="py-20 px-8 md:px-8">
     <div class="max-w-7xl mx-auto">
       <h2 ref="titleRef" class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
         Custom Keychain & Custom Drawing

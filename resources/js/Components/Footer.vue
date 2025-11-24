@@ -19,10 +19,10 @@
         :href="`https://instagram.com/${company.instagram}`"
         target="_blank"
         rel="noopener noreferrer"
-        class="hover:text-pink-600 transition"
+        class="hover:text-black transition"
         aria-label="Instagram"
       >
-        <i class="fa-brands fa-instagram text-xl"></i>
+        <instagram />
       </a>
 
     </div>
@@ -45,6 +45,7 @@ import { ref, computed, onMounted } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import { gsap } from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import { Instagram } from 'lucide-vue-next'
 
 // Register ScrollTrigger
 gsap.registerPlugin(ScrollTrigger)

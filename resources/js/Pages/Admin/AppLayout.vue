@@ -16,22 +16,22 @@
       <!-- Navigation -->
       <nav class="flex-1 p-4 space-y-2 mt-4">
         <Link href="/admin/company" class="menu-item" :class="{ active: $page.url.startsWith('/admin/company') }">
-          <img :src="companyIcon" alt="Company" class="w-5 h-5" />
+          <UserRoundPen alt="Company" class="w-5 h-5" />
           <span>Company</span>
         </Link>
 
         <Link href="/admin/dashboard" class="menu-item" :class="{ active: $page.url.startsWith('/admin/dashboard') }">
-          <img :src="dashboardIcon" alt="Dashboard" class="w-5 h-5" />
+          <House alt="Dashboard" class="w-5 h-5" />
           <span>Dashboard</span>
         </Link>
 
         <Link href="/admin/products" class="menu-item" :class="{ active: $page.url.startsWith('/admin/products') }">
-          <img :src="productIcon" alt="Products" class="w-5 h-5" />
+          <ShoppingBag alt="Products" class="w-5 h-5" />
           <span>Products</span>
         </Link>
 
         <Link href="/admin/portofolio" class="menu-item" :class="{ active: $page.url.startsWith('/admin/portofolio') }">
-          <img :src="portofolioIcon" alt="portofolio" class="w-5 h-5" />
+          <Images alt="portofolio" class="w-5 h-5" />
           <span>Portofolio</span>
         </Link>
       </nav>
@@ -56,13 +56,9 @@
     <!-- Main content -->
     <main class="flex-1 ml-64 p-6 overflow-y-auto relative">
       <header
-        class="fixed top-0 left-64 right-0 bg-white/70 backdrop-blur-md shadow-sm h-16 flex items-center justify-between px-8 z-10"
+        class="fixed top-0 left-64 right-0 bg-white/70 backdrop-blur-md shadow-sm h-20 flex items-center justify-between px-8 z-10"
       >
         <h2 class="text-2xl font-bold text-[#f9a825] capitalize">Admin Panel</h2>
-        <div class="flex items-center space-x-3">
-          <img :src="`/storage/${company.logo}`" alt="Profile" class="w-8 h-8 rounded-full object-cover" />
-          <span class="font-medium text-gray-700">{{ company.company_name }}</span>
-        </div>
       </header>
 
       <div class="mt-20 relative">
@@ -80,11 +76,7 @@ import { Link } from '@inertiajs/vue3'
 import { defineProps } from 'vue'
 import Alert from '@/Components/Alert.vue'
 
-import dashboardIcon from './Components/dashbaord-icon.png'
-import companyIcon from './Components/comp-icon.png'
-import productIcon from './Components/prod-icon.png'
-import portofolioIcon from './Components/port-icon.png'
-
+import { UserRoundPen, House, ShoppingBag, Images } from 'lucide-vue-next'
 const props = defineProps({
   company: Object
 })

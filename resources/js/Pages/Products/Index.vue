@@ -1,29 +1,35 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, nextTick, watch } from "vue";
 import { Link } from "@inertiajs/vue3";
 import MainLayout from "../AppLayout.vue";
 import WhatsAppFAB from "@/Components/WhatsAppFAB.vue";
+import { gsap } from "gsap";
 
-// Props dari Laravel Controller
 const props = defineProps({
     products: Array,
 });
 
-// State untuk filter
+// --- State Filter & Sort ---
 const sortBy = ref("latest");
 const priceRange = ref("all");
 const categoryFilter = ref("all");
 
-// Computed untuk produk yang difilter
+// --- PAGINATION STATE (BARU) ---
+const currentPage = ref(1);
+const itemsPerPage = 6; // Tampilkan produk per halaman
+
+// Flag FOUC
+const isInitialLoad = ref(true);
+
+// 1. Filter Logic (Hasil semua data yang lolos filter)
 const filteredProducts = computed(() => {
     let result = [...props.products];
 
-    // Filter by category
+    // Filter Category
     if (categoryFilter.value !== "all") {
         result = result.filter((p) => p.category === categoryFilter.value);
     }
-
-    // Filter by price range
+    // Filter Price
     if (priceRange.value !== "all") {
         result = result.filter((p) => {
             const price = parseInt(p.price.replace(/[^0-9]/g, ""));
@@ -34,7 +40,6 @@ const filteredProducts = computed(() => {
             return true;
         });
     }
-
     // Sort
     if (sortBy.value === "name") {
         result.sort((a, b) => a.name.localeCompare(b.name));
@@ -51,36 +56,126 @@ const filteredProducts = computed(() => {
             return priceB - priceA;
         });
     }
-
     return result;
 });
 
-// Extract unique categories dari products
+// 2. Pagination Logic (Memotong data untuk halaman aktif)
+const paginatedProducts = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return filteredProducts.value.slice(start, end);
+});
+
+const totalPages = computed(() =>
+    Math.ceil(filteredProducts.value.length / itemsPerPage)
+);
+
+// Reset halaman ke 1 jika filter berubah
+watch([categoryFilter, priceRange, sortBy], () => {
+    currentPage.value = 1;
+});
+
+// Fungsi Navigasi Halaman
+const nextPage = () => {
+    if (currentPage.value < totalPages.value) {
+        currentPage.value++;
+        scrollToTop();
+    }
+};
+
+const prevPage = () => {
+    if (currentPage.value > 1) {
+        currentPage.value--;
+        scrollToTop();
+    }
+};
+
+const scrollToTop = () => {
+    // Scroll halus ke bagian atas grid
+    const grid = document.getElementById("product-grid");
+    if (grid) {
+        grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+};
+
 const categories = computed(() => {
     const cats = props.products.map((p) => p.category).filter(Boolean);
     return [...new Set(cats)];
+});
+
+// --- ANIMASI GSAP ---
+const headerRef = ref(null);
+const filterRef = ref(null);
+
+onMounted(async () => {
+    await nextTick();
+
+    // Initial state
+    if (headerRef.value)
+        gsap.set(headerRef.value.children, { opacity: 0, y: 30 });
+    if (filterRef.value)
+        gsap.set(filterRef.value.children, { opacity: 0, y: 20 });
+
+    const cards = document.querySelectorAll(".product-card-anim");
+    if (cards.length > 0) gsap.set(cards, { opacity: 0, y: 30 });
+
+    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+    // Header
+    if (headerRef.value) {
+        tl.to(headerRef.value.children, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.1,
+        });
+    }
+    // Filter
+    if (filterRef.value) {
+        tl.to(
+            filterRef.value.children,
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
+            "-=0.6"
+        );
+    }
+    // Cards
+    if (cards.length > 0) {
+        tl.to(
+            cards,
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "power2.out",
+                onComplete: () => {
+                    isInitialLoad.value = false;
+                    gsap.set(cards, { clearProps: "all" });
+                },
+            },
+            "-=0.4"
+        );
+    } else {
+        isInitialLoad.value = false;
+    }
 });
 </script>
 
 <template>
     <MainLayout>
-        <!-- Header Section -->
         <div class="bg-gradient-to-b from-amber-50 to-white py-12 px-4">
-            <div class="max-w-7xl mx-auto">
+            <div ref="headerRef" class="max-w-7xl mx-auto">
                 <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
                     Product Catalog
                 </h1>
                 <p class="text-lg text-gray-600">
-                    Explore our collection of handcrafted and unique itemns
+                    Explore our collection of handcrafted and unique items
                 </p>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <!-- Filter Section -->
-            <div class="flex flex-wrap gap-3 mb-8">
-                <!-- Sort By -->
+        <div class="max-w-7xl mx-auto px-4 py-8" id="product-grid">
+            <div ref="filterRef" class="flex flex-wrap gap-3 mb-8">
                 <div class="relative">
                     <select
                         v-model="sortBy"
@@ -109,8 +204,6 @@ const categories = computed(() => {
                         </svg>
                     </div>
                 </div>
-
-                <!-- Price Range -->
                 <div class="relative">
                     <select
                         v-model="priceRange"
@@ -139,8 +232,6 @@ const categories = computed(() => {
                         </svg>
                     </div>
                 </div>
-
-                <!-- Category -->
                 <div class="relative">
                     <select
                         v-model="categoryFilter"
@@ -175,19 +266,18 @@ const categories = computed(() => {
                 </div>
             </div>
 
-            <!-- Products Grid -->
             <TransitionGroup
                 name="products"
                 tag="div"
                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
             >
                 <Link
-                    v-for="product in filteredProducts"
+                    v-for="product in paginatedProducts"
                     :key="product.id"
                     :href="`/products/${product.id}`"
-                    class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                    class="product-card-anim group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                    :class="{ 'initial-hidden': isInitialLoad }"
                 >
-                    <!-- Product Image -->
                     <div class="aspect-square overflow-hidden bg-gray-100">
                         <img
                             v-if="product.image"
@@ -214,8 +304,6 @@ const categories = computed(() => {
                             </svg>
                         </div>
                     </div>
-
-                    <!-- Product Info -->
                     <div class="p-4">
                         <h3
                             class="font-semibold text-gray-900 text-lg mb-1 line-clamp-1 group-hover:text-amber-600 transition-colors"
@@ -229,11 +317,14 @@ const categories = computed(() => {
                 </Link>
             </TransitionGroup>
 
-            <!-- Pagination -->
-            <div class="flex justify-center items-center gap-3 mt-8">
+            <div
+                v-if="filteredProducts.length > 0"
+                class="flex justify-center items-center gap-3 mt-8"
+            >
                 <button
-                    class="w-10 h-10 rounded-full bg-amber-400 hover:bg-amber-500 text-white flex items-center justify-center transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled
+                    @click="prevPage"
+                    :disabled="currentPage === 1"
+                    class="w-10 h-10 rounded-full bg-amber-400 hover:bg-amber-500 text-white flex items-center justify-center transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-amber-400"
                 >
                     <svg
                         class="w-5 h-5"
@@ -249,8 +340,15 @@ const categories = computed(() => {
                         />
                     </svg>
                 </button>
+
+                <span class="text-gray-600 font-medium"
+                    >Page {{ currentPage }} of {{ totalPages }}</span
+                >
+
                 <button
-                    class="w-10 h-10 rounded-full bg-amber-400 hover:bg-amber-500 text-white flex items-center justify-center transition-colors shadow-md hover:shadow-lg"
+                    @click="nextPage"
+                    :disabled="currentPage === totalPages"
+                    class="w-10 h-10 rounded-full bg-amber-400 hover:bg-amber-500 text-white flex items-center justify-center transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-amber-400"
                 >
                     <svg
                         class="w-5 h-5"
@@ -268,7 +366,6 @@ const categories = computed(() => {
                 </button>
             </div>
 
-            <!-- Empty State -->
             <div v-if="filteredProducts.length === 0" class="text-center py-16">
                 <div class="text-gray-400 mb-4">
                     <svg
@@ -291,35 +388,31 @@ const categories = computed(() => {
                 <p class="text-gray-500">Try adjusting your filters</p>
             </div>
         </div>
-
-        <!-- WhatsApp FAB -->
-        <WhatsAppFAB/>
-        
+        <WhatsAppFAB />
     </MainLayout>
 </template>
 
 <style scoped>
-/* Transition animations untuk product cards */
+.initial-hidden {
+    opacity: 0;
+    transform: translateY(30px);
+}
 .products-enter-active,
 .products-leave-active {
     transition: all 0.5s ease;
+    position: relative;
 }
-
 .products-enter-from {
     opacity: 0;
     transform: translateY(30px);
 }
-
 .products-leave-to {
     opacity: 0;
     transform: scale(0.9);
 }
-
 .products-move {
     transition: transform 0.5s ease;
 }
-
-/* Smooth line-clamp */
 .line-clamp-1 {
     display: -webkit-box;
     -webkit-line-clamp: 1;

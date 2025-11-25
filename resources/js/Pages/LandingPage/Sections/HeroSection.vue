@@ -5,7 +5,8 @@
   >
     <div ref="bgImageRef" class="absolute inset-0">
       <img
-        :src="heroBgImage" alt="Handcrafted keychains background"
+        :src="bannerUrl"
+        alt="Handcrafted keychains background"
         class="w-full h-full object-cover"
       />
     </div>
@@ -49,56 +50,87 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { gsap } from 'gsap';
 import { Link } from '@inertiajs/vue3';
 
-const heroBgImage = '/assets/BG-Hero2.jpg';
+// ------------------------------------
+// 1. PROPS (Menerima data company)
+// ------------------------------------
+const props = defineProps({
+    company: {
+        type: Object,
+        default: () => ({}),
+    }
+});
 
 defineEmits(['scroll-to']);
 
+// ------------------------------------
+// 2. LOGIKA GAMBAR DINAMIS
+// ------------------------------------
+const DEFAULT_BANNER_PATH = '/assets/BG-Hero2.jpg';
+
+const bannerUrl = computed(() => {
+    // Cek apakah props.company ada dan field 'banner' terisi
+    if (props.company && props.company.banner) {
+        // Jika ada, gunakan path dari database dengan prefix /storage/
+        return `/storage/${props.company.banner}`;
+    }
+    // Jika tidak ada, gunakan gambar fallback statis
+    return DEFAULT_BANNER_PATH;
+});
+
+// ------------------------------------
+// 3. GSAP ANIMATION LOGIC
+// ------------------------------------
+
 // Definisikan refs
 const contentRef = ref(null);
-const bgImageRef = ref(null);
+const bgImageRef = ref(null); // Ref untuk div yang menampung <img>
 const bgOverlayRef = ref(null);
 const patternRef = ref(null);
 
 onMounted(() => {
-  // Sembunyikan semua elemen
-  gsap.set(contentRef.value.children, { opacity: 0, y: 30 });
-  gsap.set(bgImageRef.value, { opacity: 0 }); // (FIX) Sembunyikan gambar
-  gsap.set(bgOverlayRef.value, { opacity: 0 });
-  gsap.set(patternRef.value, { opacity: 0, scale: 0.9 });
+    // Pastikan elemen ada sebelum animasi
+    if (!contentRef.value || !bgImageRef.value || !bgOverlayRef.value || !patternRef.value) return;
 
-  const tl = gsap.timeline({ delay: 0.2 });
+    // Sembunyikan semua elemen
+    gsap.set(contentRef.value.children, { opacity: 0, y: 30 });
+    gsap.set(bgImageRef.value, { opacity: 0 });
+    gsap.set(bgOverlayRef.value, { opacity: 0 });
+    gsap.set(patternRef.value, { opacity: 0, scale: 0.9 });
 
-  // Animasikan gambar dan overlay secara terpisah
-  tl.to(bgImageRef.value, {
-    opacity: 1,
-    duration: 1.2,
-    ease: "power2.out"
-  });
-  tl.to(bgOverlayRef.value, {
-    opacity: 1,
-    duration: 1.2,
-    ease: "power2.out"
-  }, "<0.1"); // Mulai sedikit setelah gambar
+    const tl = gsap.timeline({ delay: 0.2 });
 
-  // Animasi Pattern
-  tl.to(patternRef.value, {
-    opacity: 0.2,
-    scale: 1,
-    duration: 1.0,
-    ease: "power2.out"
-  }, "<0.3");
+    // Animasikan gambar dan overlay secara terpisah
+    tl.to(bgImageRef.value, {
+        opacity: 1,
+        duration: 1.2,
+        ease: "power2.out"
+    }, 0); // Mulai dari waktu 0
 
-  // Animasi Konten
-  tl.to(contentRef.value.children, {
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: "power2.out"
-  }, "<0.4");
+    tl.to(bgOverlayRef.value, {
+        opacity: 1,
+        duration: 1.2,
+        ease: "power2.out"
+    }, "<0.1"); // Mulai sedikit setelah gambar
+
+    // Animasi Pattern
+    tl.to(patternRef.value, {
+        opacity: 0.2,
+        scale: 1,
+        duration: 1.0,
+        ease: "power2.out"
+    }, "<0.3");
+
+    // Animasi Konten
+    tl.to(contentRef.value.children, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out"
+    }, "<0.4");
 });
 </script>

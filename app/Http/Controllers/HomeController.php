@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Portofolio;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $company = Company::first();
+
         $products = Product::with('category')
             ->where('is_published', true)
             ->latest()
@@ -44,6 +47,7 @@ class HomeController extends Controller
             });
 
         return Inertia::render('LandingPage/Home', [
+            'company' => $company,
             'products' => $products,
             'portofolios' => $portofolios,
         ]);

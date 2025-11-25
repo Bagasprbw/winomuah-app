@@ -1,30 +1,23 @@
 <template>
     <AppLayout>
-        <!-- HERO -->
-        <HeroSection @scroll-to="scrollToSection" />
+        <HeroSection :company="props.company" @scroll-to="scrollToSection" />
 
-        <!-- FEATURED PRODUCTS -->
         <FeaturedProducts
             :products="props.products"
             @open-modal="openProductModal"
         />
 
-        <!-- PORTFOLIO -->
         <PortfolioSection
             :portofolios="props.portofolios"
             @open-modal="openPortofolioModal"
         />
 
-        <!-- CUSTOM SECTION -->
         <CustomSection @open-modal="openCustomModal" />
 
-        <!-- CONTACT -->
         <ContactSection />
 
-        <!-- WhatsApp FAB -->
         <WhatsAppFAB />
 
-        <!-- Modals -->
         <ProductModal
             v-if="selectedProduct"
             :product="selectedProduct"
@@ -45,14 +38,14 @@
 </template>
 
 <script setup>
-import { ref } from "vue"; // <-- Hapus onMounted & nextTick
+import { ref } from "vue";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // Layout Utama
 import AppLayout from "../AppLayout.vue";
 
-// === SECTIONS (baru, dari folder Sections) ===
+// === SECTIONS ===
 import HeroSection from "./Sections/HeroSection.vue";
 import FeaturedProducts from "./Sections/FeaturedProducts.vue";
 import PortfolioSection from "./Sections/PortfolioSection.vue";
@@ -72,6 +65,7 @@ gsap.registerPlugin(ScrollTrigger);
 const props = defineProps({
     products: Array,
     portofolios: Array,
+    company: Object, // <<< PROPS BARU UNTUK BANNER HERO
 });
 
 // State
@@ -103,6 +97,7 @@ const scrollToSection = (sectionId) => {
     }
 };
 </script>
+
 <style scoped>
 html {
     scroll-behavior: smooth;

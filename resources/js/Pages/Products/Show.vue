@@ -112,13 +112,14 @@ onMounted(async () => {
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 md:p-10">
 
                         <div ref="leftColRef" class="space-y-4 opacity-0">
-                            <div class="aspect-square rounded-2xl overflow-hidden bg-gray-100 shadow-md relative group">
-                                <img
-                                    v-if="selectedImage"
-                                    :src="selectedImage"
-                                    :alt="product.name"
-                                    class="main-product-image w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                />
+                            <div class="rounded-2xl overflow-auto bg-gray-100 shadow-md relative group max-h-[80vh]">
+                            <img
+                                v-if="selectedImage"
+                                :src="selectedImage"
+                                :alt="product.name"
+                                class="main-product-image w-full object-contain"
+                            />
+
                                 <div
                                     v-else
                                     class="w-full h-full flex items-center justify-center text-gray-400"

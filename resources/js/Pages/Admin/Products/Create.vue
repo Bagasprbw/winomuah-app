@@ -1,8 +1,8 @@
 <template>
     <AppLayout :company="company">
-        <div class="bg-[#fffaf3] min-h-screen px-8 py-8">
+        <div class="bg-[#fffaf3] min-h-screen px-4 md:px-8 py-6 md:py-8">
             <!-- Breadcrumb -->
-            <div class="flex items-center text-sm text-gray-500 mb-4 space-x-1">
+            <div class="flex items-center text-xs md:text-sm text-gray-500 mb-4 space-x-1 flex-wrap">
                 <Link href="/admin/dashboard" class="hover:text-[#f9a825]">Dashboard</Link>
                 <span>/</span>
                 <Link href="/admin/products" class="hover:text-[#f9a825]">Products</Link>
@@ -11,16 +11,16 @@
             </div>
 
             <!-- Header -->
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold text-[#f9a825]">Add New Product</h1>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h1 class="text-2xl md:text-3xl font-bold text-[#f9a825]">Add New Product</h1>
                 <Link href="/admin/products"
-                    class="bg-[#e0e0e0] hover:bg-[#ccc] text-gray-800 font-medium px-4 py-2 rounded-lg">
+                    class="bg-[#e0e0e0] hover:bg-[#ccc] text-gray-800 font-medium px-4 py-2 rounded-lg w-full sm:w-auto text-center">
                 ← Back
                 </Link>
             </div>
 
             <!-- Form -->
-            <form @submit.prevent="submitForm" class="bg-white p-8 rounded-2xl shadow-md max-w-3xl mx-auto">
+            <form @submit.prevent="submitForm" class="bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-md max-w-3xl mx-auto">
                 <!-- Product Name -->
                 <div class="mb-5">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
@@ -37,7 +37,7 @@
                 </div>
 
                 <!-- Price & Category -->
-                <div class="grid grid-cols-2 gap-6 mb-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-5">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Price</label>
                         <input v-model="form.price" type="number" step="0.01" placeholder="Rp 0"
@@ -46,7 +46,7 @@
 
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-                        <div class="flex space-x-2">
+                        <div class="flex flex-col sm:flex-row sm:space-x-2 gap-2 sm:gap-0">
                             <select v-model="form.category_id"
                                 class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#f9a825] focus:outline-none"
                                 required>
@@ -57,8 +57,8 @@
                             </select>
 
                             <button type="button" @click="showAddCategory = true"
-                                class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-3 py-2 rounded-lg font-semibold">
-                                +
+                                class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-3 py-2 rounded-lg font-semibold sm:w-auto w-full">
+                                + Add Category
                             </button>
                         </div>
                     </div>
@@ -68,20 +68,20 @@
                 <div class="mb-6">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Product Image</label>
                     <input type="file" @change="handleImageUpload" accept="image/*"
-                        class="border border-dashed border-gray-400 w-full p-4 rounded-lg cursor-pointer hover:border-[#f9a825]" />
+                        class="border border-dashed border-gray-400 w-full p-3 md:p-4 rounded-lg cursor-pointer hover:border-[#f9a825] text-sm md:text-base" />
                     <p class="text-xs text-gray-500 mt-1">JPG, JPEG, PNG up to 5MB</p>
                     <img v-if="preview" :src="preview" alt="Preview"
-                        class="mt-3 w-32 h-32 object-cover rounded-lg border" />
+                        class="mt-3 w-24 h-24 md:w-32 md:h-32 object-cover rounded-lg border" />
                 </div>
 
                 <!-- Actions -->
-                <div class="flex justify-end space-x-3">
+                <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:space-x-3">
                     <Link href="/admin/products"
-                        class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold">
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold text-center">
                     Cancel
                     </Link>
                     <button type="submit"
-                        class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-5 py-2 rounded-lg font-semibold">
+                        class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-5 py-2 rounded-lg font-semibold text-center">
                         Save Product
                     </button>
                 </div>
@@ -89,13 +89,13 @@
 
             <!-- Modal Add/Delete Category -->
             <transition name="fade">
-                <div v-if="showAddCategory" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                    <div class="bg-white rounded-xl p-6 w-[400px] shadow-lg relative">
+                <div v-if="showAddCategory" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+                    <div class="bg-white rounded-xl p-4 sm:p-6 w-full max-w-[400px] shadow-lg relative max-h-[90vh] overflow-y-auto">
 
                         <!-- Alert di dalam modal -->
                         <transition name="fade-shake">
                             <div v-if="alertMessage" :class="[
-                                'mb-4 text-sm px-5 py-2 text-center rounded-lg font-medium shadow-sm',
+                                'mb-4 text-sm px-4 sm:px-5 py-2 text-center rounded-lg font-medium shadow-sm',
                                 alertType === 'success'
                                     ? 'bg-[#fff3e0] border border-[#fbc02d] text-[#795548]'
                                     : 'bg-red-100 border border-red-300 text-red-700'
@@ -108,29 +108,27 @@
                             </div>
                         </transition>
 
-
-
-                        <h2 class="text-lg font-bold text-[#f9a825] mb-4 mt-8">
+                        <h2 class="text-lg font-bold text-[#f9a825] mb-4 mt-4 sm:mt-8">
                             Manage Categories
                         </h2>
 
                         <!-- Input Tambah -->
-                        <div class="flex mb-4 space-x-2">
+                        <div class="flex flex-col sm:flex-row mb-4 gap-2 sm:space-x-2">
                             <input v-model="newCategory" type="text" placeholder="Category name"
                                 @keyup.enter="addCategory"
                                 class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#f9a825]" />
                             <button @click="addCategory"
-                                class="bg-[#f9a825] text-white px-4 py-2 rounded-lg hover:bg-[#fbc02d] font-semibold">
+                                class="bg-[#f9a825] text-white px-4 py-2 rounded-lg hover:bg-[#fbc02d] font-semibold sm:w-auto">
                                 Save
                             </button>
                         </div>
 
                         <!-- Daftar kategori -->
-                        <ul class="space-y-2 max-h-60 overflow-y-auto border-t pt-2">
+                        <ul class="space-y-2 max-h-40 sm:max-h-60 overflow-y-auto border-t pt-2 text-sm sm:text-base">
                             <li v-for="cat in categories" :key="cat.id" class="flex justify-between items-center">
-                                <span>{{ cat.name }}</span>
+                                <span class="truncate pr-2">{{ cat.name }}</span>
                                 <button @click="confirmDelete(cat)"
-                                    class="text-red-500 hover:text-red-700 text-sm">Delete</button>
+                                    class="text-red-500 hover:text-red-700 text-sm whitespace-nowrap">Delete</button>
                             </li>
                         </ul>
 
@@ -281,5 +279,12 @@ function submitForm() {
 
 .fade-shake-enter-active {
     animation: shake 0.4s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .fade-shake-enter-active {
+        animation-duration: 0.3s;
+    }
 }
 </style>

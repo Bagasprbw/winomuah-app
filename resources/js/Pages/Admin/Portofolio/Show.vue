@@ -1,21 +1,21 @@
 <template>
   <AppLayout :company="company">
-    <div class="bg-[#fffaf3] min-h-screen px-8 py-8">
+    <div class="bg-[#fffaf3] min-h-screen px-4 sm:px-6 md:px-8 py-6 md:py-8">
       <!-- Breadcrumb -->
-      <div class="flex items-center text-sm text-gray-500 mb-4 space-x-1">
+      <div class="flex items-center text-xs sm:text-sm text-gray-500 mb-4 space-x-1 flex-wrap">
         <Link href="/admin/dashboard" class="hover:text-[#f9a825]">Dashboard</Link>
         <span>/</span>
         <Link href="/admin/portofolio" class="hover:text-[#f9a825]">Portofolio</Link>
         <span>/</span>
-        <span class="text-[#f9a825] font-medium">{{ portofolio.title }}</span>
+        <span class="text-[#f9a825] font-medium truncate">{{ portofolio.title }}</span>
       </div>
 
       <!-- Header -->
-      <h1 class="text-3xl font-bold text-[#f9a825] mb-6">Detail Portofolio</h1>
+      <h1 class="text-2xl md:text-3xl font-bold text-[#f9a825] mb-6">Detail Portofolio</h1>
 
       <!-- Card -->
       <div
-        class="bg-white p-8 rounded-2xl shadow-md max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8"
+        class="bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-md max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8"
       >
         <!-- Gambar -->
         <div class="flex justify-center items-center">
@@ -23,11 +23,11 @@
             v-if="portofolio.image"
             :src="`/storage/${portofolio.image}`"
             alt="Portofolio Image"
-            class="w-full max-w-sm rounded-xl border object-cover shadow"
+            class="w-full max-w-xs md:max-w-sm rounded-xl border object-cover shadow"
           />
           <div
             v-else
-            class="w-full max-w-sm h-64 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400"
+            class="w-full max-w-xs md:max-w-sm h-48 md:h-64 bg-gray-100 rounded-xl flex items-center justify-center text-gray-400"
           >
             No Image
           </div>
@@ -35,8 +35,8 @@
 
         <!-- Detail -->
         <div>
-          <h2 class="text-xl font-bold text-gray-800">{{ portofolio.title }}</h2>
-          <p class="text-sm text-gray-500 mt-1">
+          <h2 class="text-xl md:text-2xl font-bold text-gray-800">{{ portofolio.title }}</h2>
+          <p class="text-xs md:text-sm text-gray-500 mt-1">
             Proyek Tahun {{ portofolio.created_at?.slice(0, 4) }}
           </p>
 
@@ -44,19 +44,19 @@
           <div class="mt-5 border-t border-[#f9a825]/30 pt-4 space-y-4 text-gray-700">
             <div class="pb-3 border-b border-gray-200">
               <span class="font-semibold text-[#f9a825]">Deskripsi:</span>
-              <p class="text-sm mt-1 leading-relaxed">
+              <p class="text-xs md:text-sm mt-1 leading-relaxed">
                 {{ portofolio.description || '-' }}
               </p>
             </div>
 
             <div class="pb-3 border-b border-gray-200">
               <span class="font-semibold text-[#f9a825]">Tools:</span>
-              <p class="text-sm mt-1">{{ portofolio.tools || '-' }}</p>
+              <p class="text-xs md:text-sm mt-1">{{ portofolio.tools || '-' }}</p>
             </div>
 
             <div class="pb-3 border-b border-gray-200">
               <span class="font-semibold text-[#f9a825]">Kategori:</span>
-              <p class="text-sm mt-1">{{ portofolio.category?.name || '-' }}</p>
+              <p class="text-xs md:text-sm mt-1">{{ portofolio.category?.name || '-' }}</p>
             </div>
 
             <div class="pb-1">
@@ -71,16 +71,16 @@
           </div>
 
           <!-- Tombol -->
-          <div class="mt-8 flex space-x-3">
+          <div class="mt-8 flex flex-col sm:flex-row gap-3 sm:space-x-3">
             <Link
               href="/admin/portofolio"
-              class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold"
+              class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold text-center"
             >
               Kembali
             </Link>
             <Link
               :href="`/admin/portofolio/${portofolio.id}/edit`"
-              class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-5 py-2 rounded-lg font-semibold"
+              class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-5 py-2 rounded-lg font-semibold text-center"
             >
               Edit
             </Link>
@@ -109,7 +109,13 @@ img:hover {
   transform: scale(1.03);
 }
 
-/* Tambahan efek halus saat hover tombol */
+/* Disable hover effect on mobile for better UX */
+@media (max-width: 768px) {
+  img:hover {
+    transform: none;
+  }
+}
+
 button, a {
   transition: all 0.2s ease;
 }

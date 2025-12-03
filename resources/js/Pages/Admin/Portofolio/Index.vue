@@ -1,19 +1,20 @@
 <template>
     <AppLayout :company="company">
-        <div class="bg-[#fffaf3] min-h-screen px-6 py-6">
+        <div class="bg-[#fffaf3] min-h-screen px-4 sm:px-6 py-4 sm:py-6">
             <!-- Header -->
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold text-[#f9a825]">Portofolio</h1>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h1 class="text-2xl md:text-3xl font-bold text-[#f9a825]">Portofolio</h1>
 
                 <Link href="/admin/portofolio/create"
-                    class="bg-[#f9a825] hover:bg-[#fbc02d] text-white font-semibold px-5 py-2 rounded-lg transition">
+                    class="bg-[#f9a825] hover:bg-[#fbc02d] text-white font-semibold px-4 sm:px-5 py-2 rounded-lg transition w-full sm:w-auto text-center">
                 TAMBAH PORTOFOLIO
                 </Link>
             </div>
 
-            <!-- Table -->
-            <div class="bg-white rounded-2xl shadow-md overflow-hidden mt-4">
-                <table class="w-full text-left border-collapse">
+            <!-- Table Container -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden mt-4 overflow-x-auto">
+                <!-- Table untuk desktop -->
+                <table class="w-full text-left border-collapse hidden md:table">
                     <thead class="bg-[#fff3e0] text-gray-700 uppercase text-sm">
                         <tr>
                             <th class="px-4 py-3 border-b">Gambar</th>
@@ -47,7 +48,7 @@
                                 {{ portofolio.description }}
                             </td>
 
-                            <!-- Harga -->
+                            <!-- Tools -->
                             <td class="px-4 py-3 border-b text-gray-700">
                                 {{ portofolio.tools }}
                             </td>
@@ -57,7 +58,7 @@
                                 {{ portofolio.category || '-' }}
                             </td>
 
-                            <!-- Status Publish (Dropdown) -->
+                            <!-- Status Publish -->
                             <td class="px-4 py-3 border-b text-gray-700">
                                 <select v-model="portofolio.is_published" @change="updatePublishStatus(portofolio)"
                                     class="border rounded-full px-3 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#f9a825]">
@@ -67,9 +68,8 @@
                             </td>
 
                             <!-- Aksi -->
-
                             <td class="px-4 py-3 border-b">
-                                <div class="flex flex-col space-y-2">
+                                <div class="flex flex-col space-y-2 min-w-[120px]">
                                     <!-- Tombol Detail -->
                                     <Link :href="`/admin/portofolio/${portofolio.id}`"
                                         class="bg-[#4e342e] hover:bg-[#3e2723] text-white px-4 py-1 rounded-full text-sm font-semibold text-center">
@@ -87,12 +87,63 @@
                                         class="bg-[#d32f2f] hover:bg-[#b71c1c] text-white px-4 py-1 rounded-full text-sm font-semibold">
                                         HAPUS
                                     </button>
-
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+
+                <!-- Card view untuk mobile -->
+                <div class="md:hidden space-y-4 p-4">
+                    <div v-for="portofolio in portofolio" :key="portofolio.id" class="bg-white border rounded-xl p-4 shadow-sm">
+                        <div class="flex gap-4">
+                            <!-- Gambar -->
+                            <div class="flex-shrink-0">
+                                <img v-if="portofolio.image" :src="`/storage/${portofolio.image}`" alt="Portofolio"
+                                    class="w-16 h-16 rounded-md object-cover" />
+                                <div v-else
+                                    class="w-16 h-16 bg-gray-100 rounded-md flex items-center justify-center text-gray-400 text-xs">
+                                    No Image
+                                </div>
+                            </div>
+
+                            <!-- Informasi -->
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-semibold text-gray-800 truncate">{{ portofolio.title }}</h3>
+                                <p class="text-xs text-gray-500 mt-1 truncate">{{ portofolio.description }}</p>
+                                <div class="flex items-center gap-2 mt-2">
+                                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">{{ portofolio.tools }}</span>
+                                    <span class="text-xs text-gray-600">{{ portofolio.category || '-' }}</span>
+                                </div>
+
+                                <!-- Status -->
+                                <div class="mt-2">
+                                    <select v-model="portofolio.is_published" @change="updatePublishStatus(portofolio)"
+                                        class="border rounded-full px-3 py-1 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#f9a825] w-full">
+                                        <option :value="true">Published</option>
+                                        <option :value="false">Private</option>
+                                    </select>
+                                </div>
+
+                                <!-- Tombol Aksi -->
+                                <div class="flex gap-2 mt-3">
+                                    <Link :href="`/admin/portofolio/${portofolio.id}`"
+                                        class="flex-1 bg-[#4e342e] hover:bg-[#3e2723] text-white px-3 py-1 rounded-full text-xs font-semibold text-center">
+                                    Detail
+                                    </Link>
+                                    <Link :href="`/admin/portofolio/${portofolio.id}/edit`"
+                                        class="flex-1 bg-[#f9a825] hover:bg-[#fbc02d] text-white px-3 py-1 rounded-full text-xs font-semibold text-center">
+                                    Edit
+                                    </Link>
+                                    <button @click="confirmDelete(portofolio)"
+                                        class="flex-1 bg-[#d32f2f] hover:bg-[#b71c1c] text-white px-3 py-1 rounded-full text-xs font-semibold">
+                                        Hapus
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </AppLayout>
@@ -127,15 +178,12 @@ function confirmDelete(portofolio) {
         router.delete(`/admin/portofolio/${portofolio.id}`, {
             preserveScroll: true,
             onSuccess: () => {
-                // opsional: bisa reload halaman agar daftar portofolio terbaru
                 router.reload({ only: ['portofolio'] })
             },
         })
     }
 }
-
 </script>
-
 
 <style scoped>
 table {
@@ -146,5 +194,12 @@ table {
 th,
 td {
     border-color: #e0e0e0;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .overflow-x-auto {
+        -webkit-overflow-scrolling: touch;
+    }
 }
 </style>

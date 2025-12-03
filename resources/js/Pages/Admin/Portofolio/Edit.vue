@@ -1,8 +1,8 @@
 <template>
   <AppLayout :company="company">
-    <div class="bg-[#fffaf3] min-h-screen px-8 py-8">
+    <div class="bg-[#fffaf3] min-h-screen px-4 sm:px-6 md:px-8 py-6 md:py-8">
       <!-- Breadcrumb -->
-      <div class="flex items-center text-sm text-gray-500 mb-4 space-x-1">
+      <div class="flex items-center text-xs sm:text-sm text-gray-500 mb-4 space-x-1 flex-wrap">
         <Link href="/admin/dashboard" class="hover:text-[#f9a825]">Dashboard</Link>
         <span>/</span>
         <Link href="/admin/portofolio" class="hover:text-[#f9a825]">Portofolio</Link>
@@ -11,13 +11,13 @@
       </div>
 
       <!-- Header -->
-      <h1 class="text-3xl font-bold text-[#f9a825] mb-6">Edit Portofolio</h1>
+      <h1 class="text-2xl md:text-3xl font-bold text-[#f9a825] mb-6">Edit Portofolio</h1>
 
       <!-- Form -->
-      <form @submit.prevent="updatePortofolio" class="bg-white p-8 rounded-2xl shadow-md max-w-3xl mx-auto">
+      <form @submit.prevent="updatePortofolio" class="bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-md max-w-3xl mx-auto">
         <!-- Portofolio Title -->
         <div class="mb-5">
-          <label class="block font-semibold text-gray-700 mb-2">Portofolio Tile</label>
+          <label class="block font-semibold text-gray-700 mb-2">Portofolio Title</label>
           <input v-model="form.title" type="text" class="input" required />
         </div>
 
@@ -27,8 +27,8 @@
           <textarea v-model="form.description" class="input" rows="3"></textarea>
         </div>
 
-        <!-- Price & Category -->
-        <div class="grid grid-cols-2 gap-6 mb-5">
+        <!-- Tools & Category -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-5">
           <div>
             <label class="block font-semibold text-gray-700 mb-2">Tools</label>
             <input v-model="form.tools" type="text" class="input" />
@@ -36,7 +36,7 @@
 
           <div>
             <label class="block font-semibold text-gray-700 mb-2">Category</label>
-            <div class="flex space-x-2">
+            <div class="flex flex-col sm:flex-row sm:space-x-2 gap-2 sm:gap-0">
               <select v-model="form.category_id" class="input flex-1" required>
                 <option disabled value="">Select Category</option>
                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">
@@ -47,9 +47,9 @@
               <button
                 type="button"
                 @click="showAddCategory = true"
-                class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-3 py-2 rounded-lg font-semibold"
+                class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-3 py-2 rounded-lg font-semibold sm:w-auto w-full"
               >
-                +
+                + Add Category
               </button>
             </div>
           </div>
@@ -58,32 +58,32 @@
         <!-- Image -->
         <div class="mb-6">
           <label class="block font-semibold text-gray-700 mb-2">Image</label>
-          <input type="file" @change="handleImage" accept="image/*" class="input border-dashed" />
+          <input type="file" @change="handleImage" accept="image/*" class="input border-dashed text-sm md:text-base" />
           <div class="mt-3 flex items-center space-x-3">
             <img
               v-if="preview"
               :src="preview"
-              class="w-24 h-24 object-cover rounded-lg border"
+              class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg border"
             />
             <img
               v-else-if="portofolio.image"
               :src="`/storage/${portofolio.image}`"
-              class="w-24 h-24 object-cover rounded-lg border"
+              class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg border"
             />
           </div>
         </div>
 
         <!-- Actions -->
-        <div class="flex justify-end space-x-3">
+        <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:space-x-3">
           <Link
             href="/admin/portofolio"
-            class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold"
+            class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold text-center"
           >
             Cancel
           </Link>
           <button
             type="submit"
-            class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-5 py-2 rounded-lg font-semibold"
+            class="bg-[#f9a825] hover:bg-[#fbc02d] text-white px-5 py-2 rounded-lg font-semibold text-center"
           >
             Update Portofolio
           </button>
@@ -94,9 +94,9 @@
       <transition name="fade">
         <div
           v-if="showAddCategory"
-          class="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+          class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
         >
-          <div class="bg-white rounded-xl p-6 w-[350px] shadow-lg">
+          <div class="bg-white rounded-xl p-4 sm:p-6 w-full max-w-[350px] shadow-lg">
             <h2 class="text-lg font-bold text-[#f9a825] mb-4">
               Add New Category
             </h2>
@@ -104,18 +104,18 @@
               v-model="newCategory"
               type="text"
               placeholder="Category name"
-              class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:ring-2 focus:ring-[#f9a825]"
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:ring-2 focus:ring-[#f9a825] text-sm md:text-base"
             />
-            <div class="flex justify-end space-x-2">
+            <div class="flex flex-col sm:flex-row justify-end gap-2 sm:space-x-2">
               <button
                 @click="showAddCategory = false"
-                class="bg-gray-200 px-3 py-1 rounded-lg hover:bg-gray-300"
+                class="bg-gray-200 px-3 py-1 rounded-lg hover:bg-gray-300 sm:w-auto w-full"
               >
                 Cancel
               </button>
               <button
                 @click="addCategory"
-                class="bg-[#f9a825] text-white px-4 py-1 rounded-lg hover:bg-[#fbc02d]"
+                class="bg-[#f9a825] text-white px-4 py-1 rounded-lg hover:bg-[#fbc02d] sm:w-auto w-full"
               >
                 Save
               </button>
@@ -205,5 +205,11 @@ function updatePortofolio() {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .input {
+    @apply px-3 py-2;
+  }
 }
 </style>
